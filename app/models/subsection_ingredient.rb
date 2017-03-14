@@ -1,0 +1,2 @@
+class SubsectionIngredient < ApplicationRecord
+end

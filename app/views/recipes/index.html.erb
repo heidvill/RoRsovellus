@@ -2,27 +2,45 @@
 
 <h1>Recipes</h1>
 
+<% @recipes.each do |recipe| %>
+    <h3><%= recipe.name %></h3>
+    <%= recipe.amount %> annosta, <%= recipe.time %> min <br><br>
+
+    <h4>Tarvikkeet</h4>
+    <% recipe.subsections.each do |s| %>
+        <strong><%= s.title %></strong> <br>
+        <strong>Ingredients</strong> <br>
+        <% s.subsection_ingredients.each do |si| %>
+            <li>si</li>
+        <% end %>
+    <% end %>
+<% end %>
+
 <table>
   <thead>
-    <tr>
-      <th>Name</th>
-      <th>Ingredients</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
+  <tr>
+    <th>Name</th>
+    <th>Section</th>
+    <th>Amount&Unit</th>
+    <th>Ingredients</th>
+    <th>Description</th>
+    <th colspan="3"></th>
+  </tr>
   </thead>
 
   <tbody>
-    <% @recipes.each do |recipe| %>
+  <% @recipes.each do |recipe| %>
       <tr>
         <td><%= recipe.name %></td>
+        <td><%= recipe.subsections %></td>
+        <td><%= recipe.subsection_ingredients %></td>
         <td><%= recipe.ingredients %></td>
         <td><%= recipe.description %></td>
         <td><%= link_to 'Show', recipe %></td>
         <td><%= link_to 'Edit', edit_recipe_path(recipe) %></td>
-        <td><%= link_to 'Destroy', recipe, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', recipe, method: :delete, data: {confirm: 'Are you sure?'} %></td>
       </tr>
-    <% end %>
+  <% end %>
   </tbody>
 </table>
 

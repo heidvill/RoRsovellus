@@ -1,32 +1,64 @@
 <%= form_for(recipe) do |f| %>
-  <% if recipe.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
+    <% if recipe.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
 
-      <ul>
-      <% recipe.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+          <ul>
+            <% recipe.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :name %>
+      <%= f.text_field :name %>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
+    <div class="field">
+      <%= f.label :amount %>
+      <%= f.number_field :amount %>
+    </div>
 
-  <div class="field">
-    <%= f.label :ingredients %>
-    <%= f.text_area :ingredients %>
-  </div>
+    <div class="field">
+      <%= f.label :duration %>
+      <%= f.number_field :time %>
+    </div>
 
-  <div class="field">
-    <%= f.label :description %>
-    <%= f.text_area :description %>
-  </div>
+    <%= f.fields_for :subsections do |s_f| %>
+        <div class="field">
+          Section <br>
+          <%= s_f.text_field :title %>
+        </div>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+        <div class="row">
+          <%= s_f.fields_for :subsection_ingredients do |si_f| %>
+
+                  <div class="col-md-1">
+                    <div class="field">
+                      Amount <br>
+                      <%= si_f.text_field :amount %>
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <div class="field">
+                      Unit <br>
+                      <%= si_f.text_field :unit %>
+                    </div>
+                  </div>
+
+
+          <% end %>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :description %>
+      <%= f.text_area :description %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
 <% end %>

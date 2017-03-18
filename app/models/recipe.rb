@@ -1,10 +1,10 @@
 class Recipe < ApplicationRecord
   has_many :subsections
   has_many :subsection_ingredients, through: :subsections
-  has_many :ingredients, through: :subsections, source: :subsection_ingredients
-  accepts_nested_attributes_for :subsections
-  #accepts_nested_attributes_for :subsection_ingredients
-  #accepts_nested_attributes_for :ingredients
+  has_many :ingredients, through: :subsection_ingredients
+
+  #scope :ingredients, -> {Recipe.subsections.ingredients}
+
 
   validates :name, length: {minimum: 3, maximum: 30}
   validates :description, length: {minimum: 3, maximum: 1500}

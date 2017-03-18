@@ -15,9 +15,6 @@ class RecipesController < ApplicationController
   # GET /recipes/new
   def new
     @recipe = Recipe.new
-    @recipe.subsections.build
-    @recipe.subsection_ingredients.build
-    @recipe.ingredients.build
   end
 
   # GET /recipes/1/edit
@@ -27,7 +24,7 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.json
   def create
-    binding.pry
+
     @recipe = Recipe.new(recipe_params)
 
     respond_to do |format|
@@ -66,16 +63,16 @@ class RecipesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_recipe
-      @recipe = Recipe.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_recipe
+    @recipe = Recipe.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def recipe_params
-      params.require(:recipe).permit(:name, :description, :amount, :time,
-                                     subsections_attributes: [:id, :title, :recipe_id],
-                                     subsection_ingredients_attributes: [:id, :amount, :unit, :subsection_id],
-                                     ingredients_attributes: [:id, :name])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def recipe_params
+    params.require(:recipe).permit(:name, :description, :amount, :time,
+                                   subsections_attributes: [:id, :title, :recipe_id],
+                                   subsection_ingredients_attributes: [:id, :amount, :unit, :subsection_id],
+                                   ingredients_attributes: [:id, :name])
+  end
 end

@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9a3c2d4e-4d17-4f06-a8dd-6b3930ebcb01" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/recipeform.js" afterPath="$PROJECT_DIR$/app/assets/javascripts/recipeform.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/recipes_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/recipes_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/recipe.rb" afterPath="$PROJECT_DIR$/app/models/recipe.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/recipes/_form.html.erb" afterPath="$PROJECT_DIR$/app/views/recipes/_form.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/recipes/index.html.erb" afterPath="$PROJECT_DIR$/app/views/recipes/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/recipes/show.html.erb" afterPath="$PROJECT_DIR$/app/views/recipes/show.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/schema.rb" afterPath="$PROJECT_DIR$/db/schema.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="$PROJECT_DIR$/.bundle/" />
     <ignored path="$PROJECT_DIR$/components/" />
@@ -58,7 +51,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show.html.erb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="show.html.erb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/recipes/show.html.erb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="374">
@@ -74,6 +67,19 @@
             <state relative-caret-position="136">
               <caret line="51" column="14" lean-forward="false" selection-start-line="51" selection-start-column="14" selection-end-line="51" selection-end-column="14" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="34">
+                <caret line="2" column="2" lean-forward="false" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="2" />
+                <folding />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -112,7 +118,6 @@
         <option value="$PROJECT_DIR$/Gemfile" />
         <option value="$PROJECT_DIR$/app/models/subsection_ingredient.rb" />
         <option value="$PROJECT_DIR$/app/models/subsection.rb" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/app/views/recipes/_form.html.erb" />
         <option value="$PROJECT_DIR$/db/migrate/20170319095726_change_column_name_time_in_recipe.rb" />
         <option value="$PROJECT_DIR$/app/models/recipe.rb" />
@@ -120,6 +125,7 @@
         <option value="$PROJECT_DIR$/app/assets/javascripts/recipeform.js" />
         <option value="$PROJECT_DIR$/app/views/recipes/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/recipes/show.html.erb" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -503,12 +509,12 @@
       <workItem from="1489742450553" duration="2526000" />
       <workItem from="1489753050407" duration="6554000" />
       <workItem from="1489864340748" duration="10154000" />
-      <workItem from="1489911036577" duration="8159000" />
+      <workItem from="1489911036577" duration="8633000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48141000" />
+    <option name="totallyTimeSpent" value="48615000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="600" y="0" width="996" height="860" extended-state="0" />
@@ -822,17 +828,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="85">
-            <caret line="5" column="140" lean-forward="false" selection-start-line="5" selection-start-column="140" selection-end-line="5" selection-end-column="140" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models/subsection.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -894,6 +889,17 @@
         <state relative-caret-position="374">
           <caret line="22" column="5" lean-forward="false" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="34">
+            <caret line="2" column="2" lean-forward="false" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="2" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

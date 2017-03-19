@@ -1,12 +1,12 @@
 require 'simplecov'
-#require 'coveralls'
-#Coveralls.wear!
-=begin
+require 'coveralls'
+require 'capybara/rspec'
+
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
     SimpleCov::Formatter::HTMLFormatter,
     Coveralls::SimpleCov::Formatter
 ]
-=end
+
 SimpleCov.start 'rails'
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'

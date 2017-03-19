@@ -37,7 +37,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'bootstrap-sass'
-#gem 'coveralls', require: false
+gem 'coveralls', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -55,6 +55,9 @@ end
 
 group :test do
   gem 'simplecov', require: false
+  gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :production do

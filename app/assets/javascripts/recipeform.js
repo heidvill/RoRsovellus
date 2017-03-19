@@ -8,7 +8,8 @@ $(document).ready(function () {
 
         recipe.name = form.find("#recipe_name").val()
         recipe.amount = form.find("#recipe_amount").val()
-        recipe.time = form.find("#recipe_time_h").val()
+        recipe.time_h = form.find("#recipe_time_h").val()
+        recipe.time_min = form.find("#recipe_time_min").val()
 
         var subsections = {}
         subsections.title = form.find("#subsection_title").val()
@@ -23,9 +24,8 @@ $(document).ready(function () {
 
         recipe.description = form.find("#recipe_description").val()
 
-        debugger
+        //debugger
 
-        /* https://api.jquery.com/jquery.post/
         jQuery.ajax ({
             url: "/recipes",
             type: "POST",
@@ -34,9 +34,8 @@ $(document).ready(function () {
             contentType: "application/json; charset=utf-8",
             success: function(){
                 alert("Jipii");
-                debugger
             }
         });
-        */
+
     });
 });

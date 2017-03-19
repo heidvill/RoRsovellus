@@ -1,19 +1,26 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @recipe.name %>
-</p>
+<h2><%= @recipe.name %></h2>
 
-<p>
-  <strong>Ingredients:</strong>
-  <%= @recipe.ingredients %>
-</p>
+<%= @recipe.amount %> persons, <%= @recipe.duration_to_s %> <br><br>
 
-<p>
-  <strong>Description:</strong>
-  <%= @recipe.description %>
-</p>
+<h4>Ingredients</h4>
+
+
+<% @recipe.subsections.each do |s| %>
+    <strong><%= s.title %></strong> <br>
+    <ul>
+    <% s.subsection_ingredients.each do |si| %>
+        <li><%= si %></li>
+    <% end %>
+    </ul>
+<% end %>
+
+
+<h4>Instructions</h4>
+<ul>
+<%= @recipe.description %>
+</ul>
 
 <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
 <%= link_to 'Back', recipes_path %>

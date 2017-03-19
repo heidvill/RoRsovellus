@@ -4,26 +4,24 @@
 
 <% @recipes.each do |recipe| %>
     <h3><%= recipe.name %></h3>
-    <%= recipe.amount %> annosta, <%= recipe.time %> min <br><br>
+    <%= recipe.amount %> persons, <%= recipe.duration_to_s %> <br><br>
 
-    <h4>Tarvikkeet</h4>
+    <h4>Ingredients</h4>
     <% recipe.subsections.each do |s| %>
         <strong><%= s.title %></strong> <br>
-        <strong>Ingredients</strong> <br>
         <% s.subsection_ingredients.each do |si| %>
-            <li>si</li>
+            <li><%= si %></li>
         <% end %>
     <% end %>
+
+    <h4>Instructions</h4>
+    <%= recipe.description %>
 <% end %>
 
 <table>
   <thead>
   <tr>
     <th>Name</th>
-    <th>Section</th>
-    <th>Amount&Unit</th>
-    <th>Ingredients</th>
-    <th>Description</th>
     <th colspan="3"></th>
   </tr>
   </thead>
@@ -32,10 +30,6 @@
   <% @recipes.each do |recipe| %>
       <tr>
         <td><%= recipe.name %></td>
-        <td><%= recipe.subsections %></td>
-        <td><%= recipe.subsection_ingredients %></td>
-        <td><%= recipe.ingredients %></td>
-        <td><%= recipe.description %></td>
         <td><%= link_to 'Show', recipe %></td>
         <td><%= link_to 'Edit', edit_recipe_path(recipe) %></td>
         <td><%= link_to 'Destroy', recipe, method: :delete, data: {confirm: 'Are you sure?'} %></td>

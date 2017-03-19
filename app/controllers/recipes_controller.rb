@@ -36,16 +36,23 @@ class RecipesController < ApplicationController
     @subsection = Subsection.new(subsection_params)
 
     respond_to do |format|
-
       if @recipe.save and @ingredient.save and @subsection.save and @subsection_ingredient
         @subsection.recipe = @recipe
         @subsection_ingredient.subsection = @subsection
         @subsection_ingredient.ingredient = @ingredient
         @subsection.save
         @subsection_ingredient.save
-
+        #binding.pry
+=begin
+        if request.xhr?
+          flash[:notice] = 'Recipe was successfully created.'
+          flash.keep(:notice)
+          render js: "document.location = '#{recipes_path}'"
+          render js: "window.location = '#{recipes_path}'"
+=end
         format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
         format.json { render :show, status: :created, location: @recipe }
+
       else
         format.html { render :new }
         format.json { render json: @recipe.errors, status: :unprocessable_entity }

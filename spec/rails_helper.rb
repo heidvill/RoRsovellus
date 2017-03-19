@@ -1,5 +1,14 @@
-require 'coveralls'
-Coveralls.wear!
+require 'simplecov'
+#require 'coveralls'
+#Coveralls.wear!
+=begin
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+    SimpleCov::Formatter::HTMLFormatter,
+    Coveralls::SimpleCov::Formatter
+]
+=end
+SimpleCov.start 'rails'
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)

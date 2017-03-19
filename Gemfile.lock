@@ -39,7 +39,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.1.4)
-    autoprefixer-rails (6.7.3)
+    autoprefixer-rails (6.7.7)
       execjs
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
@@ -54,12 +54,6 @@ GEM
       execjs
     coffee-script-source (1.8.0)
     concurrent-ruby (1.0.5)
-    coveralls (0.8.19)
-      json (>= 1.8, < 3)
-      simplecov (~> 0.12.0)
-      term-ansicolor (~> 1.3)
-      thor (~> 0.19.1)
-      tins (~> 1.6)
     debug_inspector (0.0.2)
     diff-lcs (1.3)
     docile (1.1.5)
@@ -90,14 +84,14 @@ GEM
     nio4r (2.0.0)
     nokogiri (1.7.0.1-x86-mingw32)
       mini_portile2 (~> 2.1.0)
-    pg (0.19.0-x86-mingw32)
+    pg (0.20.0-x86-mingw32)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-rails (0.3.4)
+    pry-rails (0.3.5)
       pry (>= 0.9.10)
-    puma (3.8.1)
+    puma (3.8.2)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -155,7 +149,7 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    simplecov (0.12.0)
+    simplecov (0.14.1)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
@@ -169,12 +163,9 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.3.13-x86-mingw32)
-    term-ansicolor (1.4.0)
-      tins (~> 1.0)
     thor (0.19.4)
     thread_safe (0.3.6)
-    tilt (2.0.6)
-    tins (1.13.2)
+    tilt (2.0.7)
     turbolinks (5.0.1)
       turbolinks-source (~> 5)
     turbolinks-source (5.0.0)
@@ -182,7 +173,7 @@ GEM
       thread_safe (~> 0.1)
     tzinfo-data (1.2017.1)
       tzinfo (>= 1.0.0)
-    uglifier (3.1.7)
+    uglifier (3.1.9)
       execjs (>= 0.3.0, < 3)
     web-console (3.4.0)
       actionview (>= 5.0)
@@ -201,7 +192,6 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   coffee-script-source (= 1.8.0)
-  coveralls
   jbuilder (~> 2.5)
   jquery-rails
   pg
@@ -212,6 +202,7 @@ DEPENDENCIES
   rails_layout
   rspec-rails (~> 3.5)
   sass-rails (~> 5.0)
+  simplecov
   sqlite3
   turbolinks (~> 5)
   tzinfo-data

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    console.log("moi")
+
     $( ".actions" ).on("click", function( event ) {
         event.preventDefault();
         var form = $( ".actions" ).parent()
@@ -32,10 +32,11 @@ $(document).ready(function () {
             data: JSON.stringify({data:recipe}),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success: function(){
-                alert("Jipii");
+            success: function(data){
+                if (data.location) {
+                    window.location.href = data.location;
+                }
             }
         });
-
     });
 });

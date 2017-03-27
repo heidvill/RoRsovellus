@@ -44,6 +44,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'sqlite3'
   gem 'pry-rails'
+  gem 'pry-nav'
   gem 'rspec-rails', '~> 3.5'
 end
 

@@ -24,6 +24,7 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.json
   def create
+    binding.pry
     @recipe = Recipe.new(recipe_params)
     hours = params.require(:data).permit(:time_h)[:time_h].to_i
     mins = params.require(:data).permit(:time_min)[:time_min].to_i
@@ -47,6 +48,8 @@ class RecipesController < ApplicationController
         flash.keep(:notice)
 
         render :json => {:location => url_for(recipes_path)}
+      else
+        render :json => {:recipe => @recipe, :subsection => @subsection}
       end
     else
       respond_to do |format|

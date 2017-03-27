@@ -34,8 +34,11 @@ $(document).ready(function () {
             contentType: "application/json; charset=utf-8",
             success: function(data){
                 if (data.location) {
-                    window.location.href = data.location;
+                    window.location.replace(data.location);
                 }
+            },
+            error: function (error){
+                alert("Virhe lomakkeessa");
             }
         });
     });

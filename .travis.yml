@@ -4,12 +4,17 @@ rvm:
 gemfile:
 - Gemfile.travis
 before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- sleep 3
 script:
 - bundle exec rake db:migrate --trace
 - RAILS_ENV=test bundle exec rake db:migrate --trace
 - bundle exec rake db:migrate RAILS_ENV=test
 - bundle exec rspec -fd spec/
-
+deploy:
+  provider: heroku
+  api_key:
+    secure: WBweQF5otjaQDcnXfxt6dc9IHFmPpxRyjxCrMgtyOcqjTIfj3+JZ3fOFYkQv7fs1Quk2Ug7sb/Rzg0eu7ZITNZ+6U0wIe05OcpSVzxoY2q9ZAvvxaA41Xxh93fIeC9zUnoXEfbPa6gQBohcNzbZzK+aXyA1c3c/xWUyZIT4BcfAw7KZyHN4mwq2649zg75blxv8iKWCqhZOKBJF+4fj2hfrXap/MtxSE6nVGvGJH2Tv3E1Lz6h9QUdARIfjkHhVnpMRmRb4qyXYoCuS7/zmz/M4CrT5kLeeKwIBXAlIlI2++U9KKksJe0Sog8x250u2kYz4znEP4SUfn17EuMVkzj/M4rnnPpQ6anJsPv40yOS09syC631KH1S0CUXBz9nf+TbUiFYXLBFUkcnO6W7Cg1CyYBc9+/iwFcSRl+IlbhRUWMeKPu+UZq9tVZiJOPrb4fDf2ZXXLeOUX5jASBXW7NYZoV9hRUiu5khe105kCaoNggXxeRUoN7JI0wyjvehRzRGIaSavb7zle6496xO4xcbDx2YMhN8waFvH41rv8HHUSWlvD16nCh21O6GLivxRSI/mxV3j8gzB/eH3flyk43TIJuk8EvvVX0ss5RkB8HJW6MogRQaP7Xxb70T3eDhb2BjBTkS6OCtgEAOcK4AAJ8YzhLbMiSBKh6u6olLyBYYQ=
+  repo: heidvill/RoRsovellus
+  run: rake db:migrate

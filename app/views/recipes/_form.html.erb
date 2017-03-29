@@ -1,10 +1,10 @@
-<%= form_for(recipe, :remote => true,) do |f| %>
-    <% if recipe.errors.any? %>
+<%= form_for(@recipe, :remote => true,) do |f| %>
+    <% if @recipe.errors.any? %>
         <div id="error_explanation">
-          <h2><%= pluralize(recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
+          <h2><%= pluralize(@recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
 
           <ul>
-            <% recipe.errors.full_messages.each do |message| %>
+            <% @recipe.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
             <% end %>
           </ul>
@@ -27,55 +27,49 @@
       <%= f.number_field :time_min, :value => 30 %> min
     </div>
 
-    <% if false %>
-        <% x = 0 %>
-        <% recipe.subsections.each do |section| %> <%# subsection each%>
-            <% x = x+1 %>
+    <div id="subsection">
 
-            <%= f.fields_for section do |s_f| %> <%# subsection form%>
-                <div class="field">
-                  Section <br>
-                  <%= s_f.text_field :title, :value => "Pohja#{x}", multiple: true %>
-                </div>
-            <% end %> <%# subsection form%>
+      <%= fields_for @recipe.subsections do |s_f| %>
+          <div class="field">
+            Section <br>
+            <%= s_f.text_field :title, :value => 'Pohja' %>
+          </div>
 
-            <% y = 0 %>
+          <div id="ingredients">
 
-
-        <% end %><%# subsection each%>
-    <% end %>
-
-    <%= fields_for recipe.subsections do |s_f| %>
-        <div class="field">
-          Section <br>
-          <%= s_f.text_field :title, :value => 'Pohja' %>
-        </div>
-
-        <div class="row">
-          <%= fields_for recipe.subsection_ingredients do |si_f| %>
-              <%= fields_for recipe.ingredients do |i_f| %>
-                  <div class="col-md-1">
-                    <div class="field">
-                      Amount <br>
-                      <%= si_f.text_field :amount, :value => 5 %>
+            <%= fields_for @recipe.subsection_ingredients do |si_f| %>
+                <%= fields_for @recipe.ingredients do |i_f| %>
+                    <div class="row">
+                      <div class="col-md-1">
+                        <div class="field">
+                          Amount <br>
+                          <%= si_f.text_field :amount, :value => 5 %>
+                        </div>
+                      </div>
+                      <div class="col-md-1">
+                        <div class="field">
+                          Unit <br>
+                          <%= si_f.text_field :unit, :value => 'dl' %>
+                        </div>
+                      </div>
+                      <div class="col-md-1">
+                        <div class="field">
+                          Ingredient <br>
+                          <%= i_f.text_field :name, :value => 'jauho' %>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-1">
-                    <div class="field">
-                      Unit <br>
-                      <%= si_f.text_field :unit, :value => 'dl' %>
-                    </div>
-                  </div>
-                  <div class="col-md-1">
-                    <div class="field">
-                      Ingredient <br>
-                      <%= i_f.text_field :name, :value => 'jauho' %>
-                    </div>
-                  </div>
-              <% end %>
-          <% end %>
-        </div>
-    <% end %>
+                <% end %>
+            <% end %>
+          </div> <!-- ingredients -->
+          <button type="button" id="addI" class="btn btn-default">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ingredient
+          </button>
+      <% end %> <%# subsection%>
+    </div> <!-- subsection -->
+    <button type="button" id="addS" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Section
+    </button>
 
     <div class="field">
       <%= f.label :description %>

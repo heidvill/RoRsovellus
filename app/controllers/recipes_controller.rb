@@ -24,7 +24,7 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.json
   def create
-    binding.pry
+
     @recipe = Recipe.new(recipe_params)
     hours = params.require(:data).permit(:time_h)[:time_h].to_i
     mins = params.require(:data).permit(:time_min)[:time_min].to_i
@@ -49,7 +49,7 @@ class RecipesController < ApplicationController
 
         render :json => {:location => url_for(recipes_path)}
       else
-        render :json => {:recipe => @recipe, :subsection => @subsection}
+        render :json => {:recipe => @recipe, :subsection => @subsection, :errors => @recipe.errors}, :status => 422
       end
     else
       respond_to do |format|
@@ -63,9 +63,12 @@ class RecipesController < ApplicationController
 
           format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
           format.json { render :show, status: :created, location: @recipe }
+
+          #format.js {render :json => {:location => url_for(recipes_path)}}
         else
           format.html { render :new }
           format.json { render json: @recipe.errors, status: :unprocessable_entity }
+          #format.js { render :json => {:errors => @recipe.errors}, status: :unprocessable_entity }
         end
       end
     end
@@ -112,6 +115,8 @@ class RecipesController < ApplicationController
 
   def subsection_ingredient_params
     params.require(:data).require(:subsection).require(:subsection_ingredients).permit(:amount, :unit)
+    #params.require(:data).require(:subsection).require(:subsection_ingredients).require(:amount)
+    #params.require(:data).require(:subsection).require(:subsection_ingredients).require(:unit)
   end
 
   def ingredient_params

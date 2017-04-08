@@ -49,7 +49,12 @@ class RecipesController < ApplicationController
 
         render :json => {:location => url_for(recipes_path)}
       else
-        render :json => {:recipe => @recipe, :subsection => @subsection, :errors => @recipe.errors}, :status => 422
+        @recipe.valid?
+        @subsection.valid?
+        @subsection_ingredient.valid?
+        @ingredient.valid?
+
+        render :json => {:recipe_errors => @recipe.errors, :subsection_errors => @subsection.errors, :si_errors => @subsection_ingredient.errors, :ingredient_errors => @ingredient.errors}, :status => 422
       end
     else
       respond_to do |format|
@@ -63,8 +68,7 @@ class RecipesController < ApplicationController
 
           format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
           format.json { render :show, status: :created, location: @recipe }
-
-          #format.js {render :json => {:location => url_for(recipes_path)}}
+          #format.js {render :json => {:location => url_for(recipes_path)}, notice: 'Tulee tänne.'}
         else
           format.html { render :new }
           format.json { render json: @recipe.errors, status: :unprocessable_entity }

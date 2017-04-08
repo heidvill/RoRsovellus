@@ -35,17 +35,59 @@ var addSubsection = function () {
     addIngredient();
 };
 
-var printErrors = function(item, index){
+Object.size = function(obj){
+    var size = 0;
+    for(key in obj){
+        if(obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
+var error_count = function (errors) {
+
+};
+
+var showErrors = function (errors) {
+    if(document.getElementById("errors").childElementCount>0){
+        document.getElementById('error_explanation').remove()
+    }
+
+    var div = document.createElement("div");
+    div.id = "error_explanation"
+    document.getElementById('errors').appendChild(div);
+
+    var h2 = document.createElement("h2"),
+        text = document.createTextNode("error probited this recipe from being saved");
+    h2.appendChild(text)
+    document.getElementById('error_explanation').appendChild(h2);
+
+    var ul = document.createElement("ul");
+    ul.id = "error_ul"
+    document.getElementById('error_explanation').appendChild(ul);
+
+    for (key1 in errors) {
+        for(key2 in errors[key1]){
+            if(Object.size(errors[key1])) {
+                var li = document.createElement("li"),
+                    text = document.createTextNode(key1 + " " + key2 + " " + errors[key1][key2])
+                li.appendChild(text)
+                document.getElementById('error_ul').appendChild(li);
+            }
+        }
+    }
+}
+
+var printErrors = function (item, index) {
     console.log(item)
 };
 
-$(document).ready(function () {
+$(document).on('turbolinks:load', function () {
 
-    $("#addI").click(function (e){
+    $("#addI").click(function (e) {
         addIngredient();
     });
 
-    $("#addS").click(function (e){
+    $("#addS").click(function (e) {
         addSubsection();
     });
 
@@ -137,11 +179,13 @@ $(document).ready(function () {
                 }
             },
             error: function (data) {
-                var mistakes = data.responseJSON.errors
-                for(key in mistakes) {
-                    console.log(key + " " + mistakes[key])
-                }
-                alert("Virhe lomakkeessa");
+                var mistakes = {}
+                mistakes.recipe = data.responseJSON.recipe_errors
+                mistakes.subsection = data.responseJSON.subsection_errors
+                mistakes.amount_unit = data.responseJSON.si_errors
+                mistakes.ingredient = data.responseJSON.ingredient_errors
+
+                showErrors(mistakes)
             }
         });
     });

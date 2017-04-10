@@ -1,4 +1,4 @@
-var section_queue = [2,3,4,5];
+var section_queue = [2, 3, 4, 5];
 
 var addIngredient = function (n) {
     var section_ingredients = document.getElementById('ingredients' + n);
@@ -35,7 +35,7 @@ var addIngredient = function (n) {
 
         var input3 = document.createElement("input");
         input3.type = "text";
-        input3.id = "subsection_ingredient_amount";
+        input3.id = "ingredient_name";
         input3.placeholder = "ingredient"
         div3.appendChild(input3);
 
@@ -56,6 +56,7 @@ var addSubsection = function () {
         var section_i = section_queue.shift();
         var div = document.createElement("div");
         div.id = "subsection" + section_i;
+        div.className = "subsection"
         document.getElementById('subsections').appendChild(div);
 
         var div_title = document.createElement("div"),
@@ -70,6 +71,7 @@ var addSubsection = function () {
         var input = document.createElement("input");
         input.type = "text";
         input.id = "subsection_title" + section_i;
+        input.className = "subsection_title"
         div_title.appendChild(input);
 
         var button_r = document.createElement("button"),
@@ -88,6 +90,7 @@ var addSubsection = function () {
 
         var div_ingredients = document.createElement("div")
         div_ingredients.id = "ingredients" + section_i
+        div_ingredients.className = "ingredients"
 
         div.appendChild(div_ingredients)
 
@@ -151,16 +154,16 @@ var showErrors = function (errors) {
 };
 
 $(document).on('click', ".btn.btn-default.i", function () {
-        button_id = this.id
-        id = parseInt(button_id.charAt(button_id.length - 1))
-        addIngredient(id)
+    button_id = this.id
+    id = parseInt(button_id.charAt(button_id.length - 1))
+    addIngredient(id)
 });
 
 $(document).on('click', ".btn.btn-default.r", function () {
     var p = this.parentElement.parentElement
-    if(p.id.substring(0, p.id.length-1)=="subsection"){
-        var ind = parseInt(p.id.charAt(p.id.length-1))
-        if($.inArray(ind, section_queue)==-1)
+    if (p.id.substring(0, p.id.length - 1) == "subsection") {
+        var ind = parseInt(p.id.charAt(p.id.length - 1))
+        if ($.inArray(ind, section_queue) == -1)
             section_queue.push(ind)
     }
     p.remove()
@@ -183,55 +186,25 @@ $(document).on('turbolinks:load', function () {
         recipe.time_h = form.find("#recipe_time_h").val()
         recipe.time_min = form.find("#recipe_time_min").val()
 
-        // http://stackoverflow.com/questions/6434731/how-to-generate-many-of-the-same-form-fields
+        var subs = form.find("[class=subsection]")
+        var subs_a = []
+        subs.each(function (i) {
+            var $this = $(this)
+            var sub = {}
+            var title = $this.find(".subsection_title").val();
+            sub.title = title
+            ings_a = []
+            $this.find(".row").each(function (j) {
+                var ingredient = {}
+                ingredient.amount = $(this).find("#subsection_ingredient_amount").val()
+                ingredient.unit = $(this).find("#subsection_ingredient_unit").val()
+                ingredient.name = $(this).find("#ingredient_name").val()
+                ings_a.push(ingredient)
+                sub.ings = ings_a
+            })
+            subs_a.push(sub)
+        });
 
-        /*
-         var subsections_a = [];
-
-         var subsections_html = form.find("[id=subsection]")
-
-         subsections_html.each(function() {
-         var s = {}
-         s.title = ($(this).find("#subsection_title").val());
-         subsections_a.push(s)
-         var si_a = [];
-         var si_u = [];
-         var i = [];
-         $(this).find("[id=subsection_ingredient_amount]").each(function() {
-         si_a.push($(this).val());
-         });
-         subsections_a.push(si_a)
-         });
-
-         var subsections_a = {}
-         subsections_a.title = form.find("#subsection_title").val()
-
-         var list = form.find("#ingredients")
-
-         var si_a = [];
-
-         list.find("[id=subsection_ingredient_amount]").each(function() {
-         si_a.push($(this).val());
-         });
-
-         var si_u = [];
-         list.find("[id=subsection_ingredient_unit]").each(function() {
-         si_u.push($(this).val());
-         });
-
-         var i = [];
-         list.find("[id=ingredient_name]").each(function() {
-         i.push($(this).val());
-         });
-
-         var subsection_ingredient = {}
-         subsection_ingredient.amount = si_a
-         subsection_ingredient.unit = si_u
-         subsection_ingredient.ingredient = i
-
-         subsections_a.subsection_ingredients = subsection_ingredient
-         recipe.subsection = subsections_a
-         */
 
         var subsections = {}
         subsections.title = form.find("#subsection_title").val()
@@ -243,6 +216,8 @@ $(document).on('turbolinks:load', function () {
 
         subsections.subsection_ingredients = subsection_ingredient
         recipe.subsection = subsections
+
+        recipe.subsections = subs_a
 
         recipe.description = form.find("#recipe_description").val()
 

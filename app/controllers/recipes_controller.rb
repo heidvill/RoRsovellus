@@ -25,6 +25,12 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.json
   def create
+    binding.pry
+
+    #
+    # PARAMETRIEN REQUIRE/PERMIT KESKEN
+    #
+
     @recipe = Recipe.new(recipe_params)
     hours = params.require(:data).permit(:time_h)[:time_h].to_i
     mins = params.require(:data).permit(:time_min)[:time_min].to_i
@@ -114,13 +120,11 @@ class RecipesController < ApplicationController
   end
 
   def subsection_params
-    params.require(:data).require(:subsection).permit(:title)
+    params.require(:data).permit(:subsections => [:title, :ings => [:amount, :unit, :name]])
   end
 
   def subsection_ingredient_params
-    params.require(:data).require(:subsection).require(:subsection_ingredients).permit(:amount, :unit)
-    #params.require(:data).require(:subsection).require(:subsection_ingredients).require(:amount)
-    #params.require(:data).require(:subsection).require(:subsection_ingredients).require(:unit)
+    params.require(:data).require(:subsections).require(:subsection_ingredients).permit(:amount, :unit)
   end
 
   def ingredient_params

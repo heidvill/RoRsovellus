@@ -1,5 +1,6 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: [:show, :edit, :update, :destroy]
+  before_action :set_units, only: [:new, :edit, :create]
 
   # GET /recipes
   # GET /recipes.json
@@ -24,7 +25,6 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.json
   def create
-
     @recipe = Recipe.new(recipe_params)
     hours = params.require(:data).permit(:time_h)[:time_h].to_i
     mins = params.require(:data).permit(:time_min)[:time_min].to_i
@@ -125,5 +125,9 @@ class RecipesController < ApplicationController
 
   def ingredient_params
     params.require(:data).require(:subsection).require(:subsection_ingredients).permit(:ingredient)
+  end
+
+  def set_units
+    @units = ["dl", "l", "g", "kg", "tbsp", "tsp", "-", "pcs"]
   end
 end

@@ -31,15 +31,17 @@
       <%= f.number_field :time_min, :value => 30 %> min
     </div>
 
-    <div id="subsection">
+    <div id="subsections">
+
+    <div id="subsection1">
 
       <%= fields_for @recipe.subsections do |s_f| %>
           <div class="field">
             Section <br>
-            <%= s_f.text_field :title, :value => 'Pohja' %>
+            <%= s_f.text_field :title, :id => "subsection_title1", :value => 'Pohja' %>
           </div>
 
-          <div id="ingredients">
+          <div id="ingredients1">
 
             <%= fields_for @recipe.subsection_ingredients do |si_f| %>
                 <%= fields_for @recipe.ingredients do |i_f| %>
@@ -54,6 +56,7 @@
                         <div class="field">
                           Unit <br>
                           <%= si_f.text_field :unit, :value => 'dl' %>
+                          <%# si_fi.select :unit, options_for_select(@units) %>
                         </div>
                       </div>
                       <div class="col-md-1">
@@ -62,15 +65,16 @@
                           <%= i_f.text_field :name, :value => 'jauho' %>
                         </div>
                       </div>
-                    </div>
+                    </div> <!-- row -->
                 <% end %>
             <% end %>
           </div> <!-- ingredients -->
-          <button type="button" id="addI" class="btn btn-default">
+          <button type="button" id="addI1" class="btn btn-default i">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ingredient
           </button>
       <% end %> <%# subsection%>
     </div> <!-- subsection -->
+    </div> <!-- subsections -->
     <button type="button" id="addS" class="btn btn-default">
       <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Section
     </button>

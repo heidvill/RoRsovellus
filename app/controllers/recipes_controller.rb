@@ -25,41 +25,79 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.json
   def create
-    binding.pry
+    if request.xhr?
+      #
+      # PARAMETRIEN REQUIRE/PERMIT KESKEN
+      #
 
-    #
-    # PARAMETRIEN REQUIRE/PERMIT KESKEN
-    #
+      @recipe = Recipe.new(recipe_params)
+      hours = params.require(:data).permit(:time_h)[:time_h].to_i
+      mins = params.require(:data).permit(:time_min)[:time_min].to_i
+      @recipe.duration = hours * 60 + mins
+      everything_valid = @recipe.valid?
 
-    @recipe = Recipe.new(recipe_params)
-    hours = params.require(:data).permit(:time_h)[:time_h].to_i
-    mins = params.require(:data).permit(:time_min)[:time_min].to_i
-    @recipe.duration = hours * 60 + mins
-
+      # VANHAA
+=begin
     @ingredient = Ingredient.new
     @ingredient.name = ingredient_params[:ingredient]
 
     @subsection_ingredient = SubsectionIngredient.new(subsection_ingredient_params)
     @subsection = Subsection.new(subsection_params)
+=end
+      # VANHA PÄÄTTYY
 
-    if request.xhr?
-      if @recipe.save and @ingredient.save and @subsection.save and @subsection_ingredient
-        @subsection.recipe = @recipe
-        @subsection_ingredient.subsection = @subsection
-        @subsection_ingredient.ingredient = @ingredient
-        @subsection.save
-        @subsection_ingredient.save
+      subsections = subsection_params[:subsections]
+      subsections_h = {}
+      (0..subsections.length-1).each do |i|
+        subsection = subsections[i]
+        @subsection = Subsection.new
+        @subsection.title = subsection[:title]
+        everything_valid = false if not @subsection.valid?
+        ings = subsection[:ings]
+        subsection_h = {}
+        subsection_h["s"] = @subsection
+        sub_ings_h = {}
+        ings_h = {}
+        (0..ings.length-1).each do |j|
+          ing = ings[j]
+          @subsection_ingredient = SubsectionIngredient.new
+          @subsection_ingredient.amount = ing[:amount]
+          @subsection_ingredient.unit = ing[:unit]
+          @ingredient = Ingredient.new
+          @ingredient.name = ing[:name]
+          everything_valid = false if not @subsection_ingredient.valid?
+          everything_valid = false if not @ingredient.valid?
+          sub_ings_h[j] = @subsection_ingredient
+          ings_h[j] = @ingredient
+        end
+        subsection_h["si"] = sub_ings_h
+        subsection_h["ings"]= ings_h
+        subsections_h[i] = subsection_h
+      end
+
+      if everything_valid
+        @recipe.save
+        (0..subsections_h.length-1).each do |i|
+          @subsection = subsections_h[i]["s"]
+          @subsection.recipe = @recipe
+          @subsection.save
+          sub_ings = subsections_h[i]["si"]
+          ings = subsections_h[i]["ings"]
+          (0..ings.length-1).each do |j|
+            @subsection_ingredient = sub_ings[j]
+            @ingredient = ings[j]
+            @ingredient.save
+            @subsection_ingredient.subsection = @subsection
+            @subsection_ingredient.ingredient = @ingredient
+            @subsection_ingredient.save
+          end
+        end
 
         flash[:notice] = 'Recipe was successfully created!!!'
         flash.keep(:notice)
 
         render :json => {:location => url_for(recipes_path)}
       else
-        @recipe.valid?
-        @subsection.valid?
-        @subsection_ingredient.valid?
-        @ingredient.valid?
-
         render :json => {:recipe_errors => @recipe.errors, :subsection_errors => @subsection.errors, :si_errors => @subsection_ingredient.errors, :ingredient_errors => @ingredient.errors}, :status => 422
       end
     else

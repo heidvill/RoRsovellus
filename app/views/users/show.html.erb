@@ -1,0 +1,27 @@
+<h2><%= @user.username %></h2>
+
+<p>
+  <% if @user.recipes.empty? %>
+      You don't have any recipes.
+  <% else %>
+      has added <%= pluralize(@user.recipes.count, 'recipe') %>
+  <% end %></p>
+
+<h3>Recipes</h3>
+<ul>
+  <% @user.recipes.each do |recipe| %>
+      <li>
+        <%= link_to recipe.name, recipe %>
+        <% if @user == current_user %>
+            <%= link_to 'edit', edit_recipe_path(recipe) %>
+            <%= link_to 'delete', recipe, method: :delete, data: {confirm: 'Are you sure?'} %>
+        <% end %>
+      </li>
+  <% end %>
+</ul>
+
+<% if @user == current_user %>
+    <%= link_to 'Edit', edit_user_path(@user) %> |
+    <%= link_to 'Destroy', @user, method: :delete, data: {confirm: 'Are you sure?'} %> |
+<% end %>
+<%= link_to 'Back', users_path %>

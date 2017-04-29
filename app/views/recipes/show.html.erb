@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h2><%= @recipe.name %></h2>
+Recipe by: <%= link_to @recipe.user, @recipe.user %> <br><br>
 
 <%= @recipe.amount %> persons, <%= @recipe.duration_to_s %> <br><br>
 
@@ -23,4 +24,5 @@
 </ul>
 
 <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
+<%= link_to 'Destroy', @recipe, method: :delete, data: {confirm: 'Are you sure?'} %> |
 <%= link_to 'Back', recipes_path %>

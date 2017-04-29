@@ -26,25 +26,12 @@ class RecipesController < ApplicationController
   # POST /recipes.json
   def create
     if request.xhr?
-      #
-      # PARAMETRIEN REQUIRE/PERMIT KESKEN
-      #
-
       @recipe = Recipe.new(recipe_params)
       hours = params.require(:data).permit(:time_h)[:time_h].to_i
       mins = params.require(:data).permit(:time_min)[:time_min].to_i
       @recipe.duration = hours * 60 + mins
+      @recipe.user = current_user
       everything_valid = @recipe.valid?
-
-      # VANHAA
-=begin
-    @ingredient = Ingredient.new
-    @ingredient.name = ingredient_params[:ingredient]
-
-    @subsection_ingredient = SubsectionIngredient.new(subsection_ingredient_params)
-    @subsection = Subsection.new(subsection_params)
-=end
-      # VANHA PÄÄTTYY
 
       subsections = subsection_params[:subsections]
       subsections_h = {}
@@ -85,8 +72,11 @@ class RecipesController < ApplicationController
           ings = subsections_h[i]["ings"]
           (0..ings.length-1).each do |j|
             @subsection_ingredient = sub_ings[j]
-            @ingredient = ings[j]
-            @ingredient.save
+            @ingredient = Ingredient.find_by_name(ings[j].name)
+            if not @ingredient
+              @ingredient = ings[j]
+              @ingredient.save
+            end
             @subsection_ingredient.subsection = @subsection
             @subsection_ingredient.ingredient = @ingredient
             @subsection_ingredient.save
@@ -141,7 +131,7 @@ class RecipesController < ApplicationController
   def destroy
     @recipe.destroy
     respond_to do |format|
-      format.html { redirect_to recipes_url, notice: 'Recipe was successfully destroyed.' }
+      format.html { redirect_to :back, notice: 'Recipe was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

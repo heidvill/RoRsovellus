@@ -1,2 +1,14 @@
 <%# add navigation links to this file %>
 <li><%= link_to 'recipes', recipes_path %></li>
+<li><%= link_to 'users', users_path %></li>
+
+<% if current_user %>
+    <li><%= link_to 'new recipe', new_recipe_path %></li>
+    <li><%= link_to current_user.username, current_user %></li>
+    <li><%= link_to 'signout', signout_path, method: :delete %></li>
+<% else %>
+    <li><%= link_to 'signin', signin_path %></li>
+    <li><%= link_to 'signup', signup_path %></li>
+<% end %>
+
+

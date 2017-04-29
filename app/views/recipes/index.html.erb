@@ -1,7 +1,7 @@
 <h1>Recipes</h1>
 
 <% @recipes.each do |recipe| %>
-    <h3><%= recipe.name %></h3>
+    <h3><%= link_to recipe.name, recipe %></h3>
     <%= recipe.amount %> persons, <%= recipe.duration_to_s %> <br><br>
 
     <h4>Ingredients</h4>
@@ -16,26 +16,6 @@
     <%= recipe.description %>
 <% end %>
 
-<table>
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th colspan="3"></th>
-  </tr>
-  </thead>
-
-  <tbody>
-  <% @recipes.each do |recipe| %>
-      <tr>
-        <td><%= recipe.name %></td>
-        <td><%= link_to 'Show', recipe %></td>
-        <td><%= link_to 'Edit', edit_recipe_path(recipe) %></td>
-        <td><%= link_to 'Destroy', recipe, method: :delete, data: {confirm: 'Are you sure?'} %></td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
-
-<br>
+<br><br>
 
 <%= link_to 'New Recipe', new_recipe_path %>

@@ -20,7 +20,6 @@ describe "Users page" do
     end
 
     it "has two users" do
-
       expect(page).to have_content "jack"
       expect(page).to have_content "john"
     end
@@ -53,6 +52,14 @@ describe "User" do
       expect(current_path).to eq(signin_path)
       expect(page).to have_content 'Username and/or password mismatch'
     end
+
+    it "is deleted from db after signin and delete" do
+      sign_in(username: "jack", password: "Word1")
+
+      click_link "Destroy"
+
+      expect(User.count).to eq(0)
+    end
   end
 
   it "when signed up with good credentials, is added to the system" do
@@ -65,11 +72,21 @@ describe "User" do
       click_button('Create User')
     }.to change { User.count }.by(1)
   end
+
+  it "is recirected back to signup form if wrong credientals given" do
+    visit signup_path
+    fill_in('user_username', with: 'Brian')
+    fill_in('user_password', with: 'Secret')
+    fill_in('user_password_confirmation', with: 'Secret')
+
+    expect {
+      click_button('Create User')
+    }.to change { User.count }.by(0)
+  end
 end
 
 describe "User page" do
   let!(:user) { FactoryGirl.create :user }
-  let!(:user2) { FactoryGirl.create :user2 }
   let!(:recipe) { FactoryGirl.create :recipe }
   let!(:recipe2) { FactoryGirl.create :recipe2 }
 
@@ -98,5 +115,40 @@ describe "User page" do
 
     expect(page).to have_content "Cake"
     expect(page).not_to have_content "Rice"
+  end
+
+  it "is signed out" do
+    sign_in(username: "jack", password: "Word1")
+
+    click_link('signout')
+
+    expect(page).to have_content("Recipes")
+    expect(page).not_to have_content("jack")
+  end
+
+  it "shows edit page if invalid new password" do
+    sign_in(username: "jack", password: "Word1")
+
+    visit edit_user_path(user)
+
+    fill_in('user_password', with: 'jack')
+    fill_in('user_password_confirmation', with: 'jack')
+
+    click_button "Update User"
+
+    expect(page).to have_content "Change password"
+  end
+
+  it "changes password with valid new password" do
+    sign_in(username: "jack", password: "Word1")
+
+    visit edit_user_path(user)
+
+    fill_in('user_password', with: 'Jack1')
+    fill_in('user_password_confirmation', with: 'Jack1')
+
+    click_button "Update User"
+
+    expect(page).to have_content "successfully"
   end
 end

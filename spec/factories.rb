@@ -2,6 +2,13 @@ FactoryGirl.define do
   factory :user do
     username "jack"
     password "Word1"
+    password_confirmation "Word1"
+  end
+
+  factory :user2, class: User do
+    username "john"
+    password "Word1"
+    password_confirmation "Word1"
   end
 
   factory :recipe do

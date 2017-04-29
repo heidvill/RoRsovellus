@@ -2,6 +2,7 @@ require 'simplecov'
 require 'coveralls'
 require 'capybara/rspec'
 require 'webmock/rspec'
+require 'helpers'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
     SimpleCov::Formatter::HTMLFormatter,

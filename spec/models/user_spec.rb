@@ -10,4 +10,9 @@ RSpec.describe User, type: :model do
     user = User.create username: "john", password: "john"
     expect(user).not_to be_valid
   end
+
+  it "prints user correctly" do
+    user = FactoryGirl.create(:user)
+    expect(user.to_s).to eq("jack")
+  end
 end

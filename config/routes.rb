@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :categories
   resources :users
   resources :recipes
   resource :session, only: [:new, :create, :destroy]

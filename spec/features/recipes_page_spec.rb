@@ -18,7 +18,6 @@ describe "Recipes page" do
     end
 
     it "has two recipes" do
-
       expect(page).to have_content "Cake"
       expect(page).to have_content "Rice"
     end

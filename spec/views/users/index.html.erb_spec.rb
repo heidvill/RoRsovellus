@@ -16,7 +16,6 @@ RSpec.describe "users/index", type: :view do
 
   it "renders a list of users" do
     render
-    expect(rendered).to have_content("Username")
-    expect(rendered).to have_content("Username2")
+    expect(rendered).to match(/Username/)
   end
 end

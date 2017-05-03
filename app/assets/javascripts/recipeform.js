@@ -175,7 +175,7 @@ $(document).on('turbolinks:load', function () {
         addSubsection();
     });
 
-    $(".actions").on("click", function (event) {
+    $("#create_recipe").on("click", function (event) {
         event.preventDefault();
         var form = $(".actions").parent()
 

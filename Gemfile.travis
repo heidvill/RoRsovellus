@@ -64,6 +64,7 @@ group :test do
   gem 'selenium-webdriver', '2.53.4'
   gem "chromedriver-helper"
   gem 'database_cleaner'
+  gem 'rails-controller-testing'
 end
 
 group :production do

@@ -36,7 +36,7 @@ RSpec.describe UsersController, type: :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # UsersController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:valid_session) { {user_id: 1} }
 
   describe "GET #index" do
     it "assigns all users as @users" do
@@ -109,27 +109,26 @@ RSpec.describe UsersController, type: :controller do
          password: 'Secret55',
          password_confirmation: 'Secret55'}
       }
-
-      #it "updates the requested user" do
-      #  user = User.create! valid_attributes
-      #  session[:user_id] = user.id
-      #  put :update, params: {id: user.to_param, user: new_attributes}, session: valid_session
-      #  user.reload
-      #  expect(user.password).to eq(new_attributes[:password])
-      #end
-
+=begin
+      it "updates the requested user" do
+        user = User.create! valid_attributes
+        put :update, params: {id: user.to_param, user: new_attributes}, session: valid_session
+        user.reload
+        expect(user.password).to eq(new_attributes[:password])
+      end
+=end
       it "assigns the requested user as @user" do
         user = User.create! valid_attributes
         put :update, params: {id: user.to_param, user: valid_attributes}, session: valid_session
         expect(assigns(:user)).to eq(user)
       end
-
-      #it "redirects to the user" do
-      #  user = User.create! valid_attributes
-      #  session[:user_id] = user.id
-      #  put :update, params: {id: user.to_param, user: valid_attributes}, session: valid_session
-      #  expect(response).to redirect_to(user)
-      #end
+=begin
+      it "redirects to the user" do
+        user = User.create! valid_attributes
+        put :update, params: {id: user.to_param, user: valid_attributes}, session: valid_session
+        expect(response).to redirect_to(user)
+      end
+=end
     end
 
     context "with invalid params" do

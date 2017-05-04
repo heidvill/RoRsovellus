@@ -1,6 +1,8 @@
+=begin
 require 'rails_helper'
 
 RSpec.describe "categories/index", type: :view do
+  include ActionView::Helpers
   before(:each) do
     assign(:categories, [
       Category.create!(
@@ -17,3 +19,4 @@ RSpec.describe "categories/index", type: :view do
     assert_select "tr>td", :text => "Name".to_s, :count => 2
   end
 end
+=end

@@ -1,0 +1,32 @@
+<h1>New Category</h1>
+
+<%= form_for(@recipe_category) do |f| %>
+    <% if @recipe_category.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@recipe_category.errors.count, "error") %> prohibited this ingredient from being saved:</h2>
+
+          <ul>
+            <% @recipe_category.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :recipe %>
+      <%= f.select :recipe_id, options_from_collection_for_select(@recipes, :id, :name, selected: session[:recipe_id]) %>
+    </div>
+
+    <div class="field">
+      <%= f.label :category %>
+      <%= f.select :category_id, options_from_collection_for_select(@categories, :id, :name, selected: @recipe_category.category_id) %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+<% end %>
+
+
+<%= link_to 'Back', @recipe_category.recipe %>

@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h2><%= @ingredient.name %></h2>
 
 <% @ingredient.recipes.each do |recipe|%>
@@ -7,5 +5,5 @@
 <% end %>
 
 <br>
-<%= link_to 'Edit', edit_ingredient_path(@ingredient) %> |
-<%= link_to 'Back', ingredients_path %>
+<%= link_to 'Edit', edit_ingredient_path(@ingredient) %>
+<%= link_to 'Destroy', @ingredient, method: :delete, data: { confirm: 'Are you sure?' } %>

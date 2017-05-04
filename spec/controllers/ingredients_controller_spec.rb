@@ -81,9 +81,9 @@ RSpec.describe IngredientsController, type: :controller do
         expect(assigns(:ingredient)).to be_persisted
       end
 
-      it "redirects to the created ingredient" do
+      it "redirects to all ingredients" do
         post :create, params: {ingredient: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Ingredient.last)
+        expect(response).to redirect_to(ingredients_path)
       end
     end
 
@@ -103,14 +103,14 @@ RSpec.describe IngredientsController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {name: "cucumber"}
       }
 
       it "updates the requested ingredient" do
         ingredient = Ingredient.create! valid_attributes
         put :update, params: {id: ingredient.to_param, ingredient: new_attributes}, session: valid_session
         ingredient.reload
-        skip("Add assertions for updated state")
+        expect(assigns(:ingredient)[:name]).to eq(new_attributes[:name])
       end
 
       it "assigns the requested ingredient as @ingredient" do
@@ -119,10 +119,10 @@ RSpec.describe IngredientsController, type: :controller do
         expect(assigns(:ingredient)).to eq(ingredient)
       end
 
-      it "redirects to the ingredient" do
+      it "redirects to all ingredients" do
         ingredient = Ingredient.create! valid_attributes
         put :update, params: {id: ingredient.to_param, ingredient: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(ingredient)
+        expect(response).to redirect_to(ingredients_path)
       end
     end
 

@@ -81,9 +81,9 @@ RSpec.describe CategoriesController, type: :controller do
         expect(assigns(:category)).to be_persisted
       end
 
-      it "redirects to the created category" do
+      it "redirects to all categories" do
         post :create, params: {category: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Category.last)
+        expect(response).to redirect_to(categories_path)
       end
     end
 

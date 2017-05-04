@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
   def new
-    # renderöi kirjautumissivun
   end
 
   def create
@@ -9,7 +8,7 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id if user
       redirect_to user, notice: "Welcome back!"
     else
-      redirect_to :back, alert: "Username and/or password mismatch"
+      redirect_back fallback_location: new_session_path, alert: "Username and/or password mismatch"
     end
   end
 

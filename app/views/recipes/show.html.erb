@@ -1,9 +1,20 @@
-<p id="notice"><%= notice %></p>
-
 <h2><%= @recipe.name %></h2>
-Recipe by: <%= link_to @recipe.user, @recipe.user %> <br><br>
 
-<%= @recipe.amount %> persons, <%= @recipe.duration_to_s %> <br><br>
+<div class="row">
+
+  <div class="col-md-6">
+    Recipe by: <%= link_to @recipe.user, @recipe.user %> <br><br>
+    <%= @recipe.amount %> persons, <%= @recipe.duration_to_s %>
+  </div>
+
+  <div class="col-md-6">
+    <% @recipe.recipe_categories.each do |rc| %>
+        <li><%= link_to rc.category.name, rc.category %> <%= link_to 'X', rc, method: :delete if current_user%></li>
+    <% end %>
+    <br>
+    <%= link_to 'add category', new_recipe_category_path if current_user%>
+  </div>
+</div>
 
 <h4>Ingredients</h4>
 
@@ -11,18 +22,19 @@ Recipe by: <%= link_to @recipe.user, @recipe.user %> <br><br>
 <% @recipe.subsections.each do |s| %>
     <strong><%= s.title %></strong> <br>
     <ul>
-    <% s.subsection_ingredients.each do |si| %>
-        <li><%= si %></li>
-    <% end %>
+      <% s.subsection_ingredients.each do |si| %>
+          <li><%= si %></li>
+      <% end %>
     </ul>
 <% end %>
 
 
 <h4>Instructions</h4>
 <ul>
-<%= @recipe.description %>
+  <%= @recipe.description %>
 </ul>
 
-<%= link_to 'Edit', edit_recipe_path(@recipe) %> |
-<%= link_to 'Destroy', @recipe, method: :delete, data: {confirm: 'Are you sure?'} %> |
-<%= link_to 'Back', recipes_path %>
+<% if current_user == @recipe.user %>
+    <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
+    <%= link_to 'Destroy', @recipe, method: :delete, data: {confirm: 'Are you sure?'} %> |
+<% end %>

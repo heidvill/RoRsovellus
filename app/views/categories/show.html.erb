@@ -1,9 +1,10 @@
-<p id="notice"><%= notice %></p>
+<h2><%= @category.name %></h2>
 
-<p>
-  <strong>Name:</strong>
-  <%= @category.name %>
-</p>
+<% @category.recipes.each do |recipe| %>
+    <li><%=link_to recipe.name, recipe %></li>
+<% end %>
+<br>
 
-<%= link_to 'Edit', edit_category_path(@category) %> |
-<%= link_to 'Back', categories_path %>
+<%= link_to 'Edit', edit_category_path(@category) %>
+<%= link_to 'Destroy', @category, method: :delete, data: { confirm: 'Are you sure?' } %>
+

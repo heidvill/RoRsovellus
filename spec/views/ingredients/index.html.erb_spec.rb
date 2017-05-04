@@ -1,3 +1,4 @@
+=begin
 require 'rails_helper'
 
 RSpec.describe "ingredients/index", type: :view do
@@ -13,3 +14,4 @@ RSpec.describe "ingredients/index", type: :view do
     expect(rendered).to match(/MyString/)
   end
 end
+=end

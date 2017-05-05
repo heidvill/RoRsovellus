@@ -34,11 +34,6 @@ end
 =begin
 describe "Recipe" do
 
-  #it "is ok", js:true do
-    #xhr :post, :create, data:{name: "Cake", amount: "4", time_h:"1", time_min: "30", description:"Mix"}
-   # post :create, xhr: true, params: {data:{name: "Cake", amount: "4", time_h:"1", time_min: "30", description:"Mix"}}
-  #end
-
   before :each do
     WebMock.disable_net_connect!(allow_localhost:true)
   end

@@ -205,18 +205,6 @@ $(document).on('turbolinks:load', function () {
             subs_a.push(sub)
         });
 
-
-        var subsections = {}
-        subsections.title = form.find("#subsection_title").val()
-
-        var subsection_ingredient = {}
-        subsection_ingredient.amount = form.find("#subsection_ingredient_amount").val()
-        subsection_ingredient.unit = form.find("#subsection_ingredient_unit").val()
-        subsection_ingredient.ingredient = form.find("#ingredient_name").val()
-
-        subsections.subsection_ingredients = subsection_ingredient
-        recipe.subsection = subsections
-
         recipe.subsections = subs_a
 
         recipe.description = form.find("#recipe_description").val()

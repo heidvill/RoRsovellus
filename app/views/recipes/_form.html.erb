@@ -1,4 +1,4 @@
-<%= form_for(@recipe, :remote => true,) do |f| %>
+<%= form_for(@recipe, :remote => true) do |f| %>
 
     <div id="errors">
     </div>
@@ -33,47 +33,47 @@
 
     <div id="subsections">
 
-    <div id="subsection1" class="subsection">
+      <div id="subsection1" class="subsection">
 
-      <%= fields_for @recipe.subsections do |s_f| %>
-          <div class="field">
-            Section <br>
-            <%= s_f.text_field :title, :id => "subsection_title1", :class => "subsection_title", :value => 'Pohja' %>
-          </div>
+        <%= fields_for @recipe.subsections do |s_f| %>
+            <div class="field">
+              Section <br>
+              <%= s_f.text_field :title, :id => "subsection_title1", :class => "subsection_title", :value => 'Pohja' %>
+            </div>
 
-          <div id="ingredients1" class="ingredients">
+            <div id="ingredients1" class="ingredients">
 
-            <%= fields_for @recipe.subsection_ingredients do |si_f| %>
-                <%= fields_for @recipe.ingredients do |i_f| %>
-                    <div class="row">
-                      <div class="col-md-1">
-                        <div class="field">
-                          Amount <br>
-                          <%= si_f.text_field :amount, :value => 5 %>
+              <%= fields_for @recipe.subsection_ingredients do |si_f| %>
+                  <%= fields_for @recipe.ingredients do |i_f| %>
+                      <div class="row">
+                        <div class="col-md-1">
+                          <div class="field">
+                            Amount <br>
+                            <%= si_f.text_field :amount, :value => 5 %>
+                          </div>
                         </div>
-                      </div>
-                      <div class="col-md-1">
-                        <div class="field">
-                          Unit <br>
-                          <%= si_f.text_field :unit, :value => 'dl' %>
-                          <%#= si_f.select :unit, options_for_select(@units) %>
+                        <div class="col-md-1">
+                          <div class="field">
+                            Unit <br>
+                            <%#= si_f.text_field :unit, :value => 'dl' %>
+                            <%= select("subsection_ingredient", "unit", @units) %>
+                          </div>
                         </div>
-                      </div>
-                      <div class="col-md-1">
-                        <div class="field">
-                          Ingredient <br>
-                          <%= i_f.text_field :name, :value => 'jauho' %>
+                        <div class="col-md-1">
+                          <div class="field">
+                            Ingredient <br>
+                            <%= i_f.text_field :name, :value => 'jauho' %>
+                          </div>
                         </div>
-                      </div>
-                    </div> <!-- row -->
-                <% end %>
-            <% end %>
-          </div> <!-- ingredients -->
-          <button type="button" id="addI1" class="btn btn-default i">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ingredient
-          </button>
-      <% end %> <%# subsection%>
-    </div> <!-- subsection -->
+                      </div> <!-- row -->
+                  <% end %>
+              <% end %>
+            </div> <!-- ingredients -->
+            <button type="button" id="addI1" class="btn btn-default i">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ingredient
+            </button>
+        <% end %> <%# subsection%>
+      </div> <!-- subsection -->
     </div> <!-- subsections -->
     <button type="button" id="addS" class="btn btn-default">
       <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Section
@@ -83,8 +83,11 @@
       <%= f.label :description %>
       <%= f.text_area :description, :value => 'Sekoita' %>
     </div>
-
-    <div class="actions", id="create_recipe">
-      <%= f.submit %>
+    <% if @recipe.new_record? %>
+        <div class="actions" , id="create_recipe">
+    <% else %>
+        <div class="actions" , id="edit_recipe">
+    <% end %>
+    <%= f.submit %>
     </div>
 <% end %>

@@ -31,7 +31,7 @@ describe "Recipes page" do
   end
 end
 
-=begin
+
 describe "Recipe" do
 
   before :each do
@@ -48,17 +48,17 @@ describe "Recipe" do
 
     fill_in('subsection_title1', with: "Salad")
     fill_in('subsection_ingredient_amount', with: 4)
-    fill_in('subsection_ingredient_unit', with: "cups")
+    select('cups', from: 'subsection_ingredient[unit]')
     fill_in('ingredient_name', with: "lettuce")
 
     fill_in('recipe_description', with: "Wash and cut")
 
-    expect {
-      click_button "Create Recipe"
-    }.to change{ Recipe.count }.from(0).to(1)
+   # expect {
+    #  click_button "Create Recipe"
+    #}.to change{ Recipe.count }.from(0).to(1)
 
-    #click_button "Create Recipe"
-    #expect(Recipe.count).to eq(1)
+    click_button "Create Recipe"
+    sleep 2
+    expect(Recipe.count).to eq(1)
   end
 end
-=end

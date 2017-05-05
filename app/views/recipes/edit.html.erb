@@ -1,6 +1,65 @@
 <h1>Editing Recipe</h1>
 
-<%= render 'form', recipe: @recipe %>
+<%#= render 'form', recipe: @recipe %>
 
-<%= link_to 'Show', @recipe %> |
-<%= link_to 'Back', recipes_path %>
+<h2><%= @recipe.name %></h2>
+
+Do not leave any input empty when filling new ingredients.
+
+<%= form_for(@recipe, :remote => true) do |f| %>
+    <%= hidden_field_tag :recipe_id, @recipe.id %>
+    <div class="field">
+      <%= f.label :amount %>
+      <%= f.number_field :amount, :value => @recipe.amount %>
+    </div>
+
+    <div class="field">
+      <%= f.label :duration %>
+      <%= f.number_field :time_h, :value => @recipe.duration.divmod(60)[0] %> h
+      <%= f.number_field :time_min, :value => @recipe.duration.divmod(60)[1] %> min
+    </div>
+
+    <div id="subsections">
+
+      <% @recipe.subsections.each_with_index do |sub, index| %>
+
+          <div id=<%= "subsection#{index+1}" %> class="subsection">
+            <%= fields_for @recipe.subsections do |s_f| %>
+                <%= hidden_field_tag :subsection_title, sub.title %>
+
+                <h3><%= sub.title %> <%= link_to 'X', sub, method: :delete %></h3>
+                <% sub.subsection_ingredients.each do |si| %>
+                    <li><%= si %> <%= link_to 'X', si, method: :delete %></li>
+                <% end %>
+
+                <div id=<%= "ingredients#{index+1}" %> class="ingredients">
+
+                  <%= fields_for @recipe.subsection_ingredients do |si_f| %>
+                      <%= fields_for @recipe.ingredients do |i_f| %>
+                      <% end %>
+                  <% end %>
+                </div> <!-- ingredients -->
+                <button type="button" id=<%= "AddI#{index+1}" %> class="btn btn-default i
+                ">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ingredient
+                </button>
+            <% end %> <%# subsection%>
+          </div> <!-- subsection -->
+      <% end %>
+    </div> <!-- subsections -->
+    <button type="button" id="addS" class="btn btn-default">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Section
+    </button>
+    <div class="field">
+      <%= f.label :description %>
+      <%= f.text_area :description, :value => @recipe.description %>
+    </div>
+
+    <div class="actions" , id="edit_recipe">
+      <%= f.submit %>
+    </div>
+
+<% end %>
+
+<br>
+<%= link_to 'Back to the recipe', @recipe %>

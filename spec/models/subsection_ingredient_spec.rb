@@ -12,6 +12,6 @@ RSpec.describe SubsectionIngredient, type: :model do
     i = Ingredient.create name:"flour"
     si = SubsectionIngredient.create amount:5, unit:"dl", ingredient_id:i.id
 
-    expect(si.to_s).to eq("5.0 dl flour")
+    expect(si.to_s).to eq("5 dl flour")
   end
 end

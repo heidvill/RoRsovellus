@@ -3,17 +3,6 @@
 <% @recipes.each do |recipe| %>
     <h3><%= link_to recipe.name, recipe %></h3>
     <%= recipe.amount %> persons, <%= recipe.duration_to_s %> <br><br>
-
-    <h4>Ingredients</h4>
-    <% recipe.subsections.each do |s| %>
-        <strong><%= s.title %></strong> <br>
-        <% s.subsection_ingredients.each do |si| %>
-            <li><%= si %></li>
-        <% end %>
-    <% end %>
-
-    <h4>Instructions</h4>
-    <%= recipe.description %>
 <% end %>
 
 <br><br>

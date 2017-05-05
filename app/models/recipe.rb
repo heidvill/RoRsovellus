@@ -13,7 +13,10 @@ class Recipe < ApplicationRecord
 
   def duration_to_s
     hh, mm = duration.divmod(60)
-    "#{hh} hours #{mm} mins"
+
+    s = "#{hh} hours #{mm} mins" if not hh==0
+    s = "#{mm} mins" if hh==0
+    s
   end
 
 end

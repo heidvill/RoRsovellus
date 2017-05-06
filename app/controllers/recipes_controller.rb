@@ -1,11 +1,17 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: [:show, :edit, :update, :destroy]
   before_action :set_units, only: [:new, :edit, :create]
+  before_action :ensure_that_signed_in, except: [:index, :show]
 
   # GET /recipes
   # GET /recipes.json
   def index
     @recipes = Recipe.all
+    order = params[:order] || 'name'
+    @recipes = case order
+                 when 'name' then Recipe.order(:name)
+                   when 'added' then Recipe.order(created_at: :desc)
+               end
   end
 
   # GET /recipes/1
@@ -17,7 +23,6 @@ class RecipesController < ApplicationController
   # GET /recipes/new
   def new
     @recipe = Recipe.new
-    set_units
   end
 
   # GET /recipes/1/edit
@@ -36,62 +41,11 @@ class RecipesController < ApplicationController
       everything_valid = @recipe.valid?
 
       subsections = subsection_params[:subsections]
-      subsections_h = {}
-      (0..subsections.length-1).each do |i|
-        subsection = subsections[i]
-        @subsection = Subsection.new
-        @subsection.title = subsection[:title]
-        everything_valid = false if not @subsection.valid?
-        ings = subsection[:ings]
-        subsection_h = {}
-        subsection_h["s"] = @subsection
-=begin
-        sub_ings_h = {}
-        ings_h = {}
-
-        #a, b = create_incredients(subsection[:ings])
-
-        (0..ings.length-1).each do |j|
-          ing = ings[j]
-          @subsection_ingredient = SubsectionIngredient.new
-          @subsection_ingredient.amount = ing[:amount]
-          @subsection_ingredient.unit = ing[:unit]
-          @ingredient = Ingredient.new
-          @ingredient.name = ing[:name]
-          everything_valid = false if not @subsection_ingredient.valid?
-          everything_valid = false if not @ingredient.valid?
-          sub_ings_h[j] = @subsection_ingredient
-          ings_h[j] = @ingredient
-        end
-=end
-
-        sub_ings_h, ings_h, everything_valid = create_recipes(ings, everything_valid)
-
-        subsection_h["si"] = sub_ings_h
-        subsection_h["ings"]= ings_h
-        subsections_h[i] = subsection_h
-      end
+      subsections_h, everything_valid = create_subsections(subsections, everything_valid)
 
       if everything_valid
         @recipe.save
-        (0..subsections_h.length-1).each do |i|
-          @subsection = subsections_h[i]["s"]
-          @subsection.recipe = @recipe
-          @subsection.save
-          sub_ings = subsections_h[i]["si"]
-          ings = subsections_h[i]["ings"]
-          (0..ings.length-1).each do |j|
-            @subsection_ingredient = sub_ings[j]
-            @ingredient = Ingredient.find_by_name(ings[j].name)
-            if not @ingredient
-              @ingredient = ings[j]
-              @ingredient.save
-            end
-            @subsection_ingredient.subsection = @subsection
-            @subsection_ingredient.ingredient = @ingredient
-            @subsection_ingredient.save
-          end
-        end
+        save_subs_n_ings(subsections_h)
 
         flash[:notice] = 'Recipe was successfully created!!!'
         flash.keep(:notice)
@@ -138,13 +92,13 @@ class RecipesController < ApplicationController
         subsection = subsections[i]
         @subsection = Subsection.new
         @subsection.title = subsection[:title]
-        everything_valid = false if not @subsection.valid?
+        everything_valid = false unless @subsection.valid?
         ings = subsection[:ings]
         subsection_h = {}
         subsection_h["s"] = @subsection
 
         unless ings.nil?
-          sub_ings_h, ings_h, everything_valid = create_recipes(ings, everything_valid)
+          sub_ings_h, ings_h, everything_valid = create_sub_ings_n_ings(ings, everything_valid)
           subsection_h["si"] = sub_ings_h
           subsection_h["ings"]= ings_h
         end
@@ -167,7 +121,7 @@ class RecipesController < ApplicationController
             (0..ings.length-1).each do |j|
               @subsection_ingredient = sub_ings[j]
               @ingredient = Ingredient.find_by_name(ings[j].name)
-              if not @ingredient
+              unless @ingredient
                 @ingredient = ings[j]
                 @ingredient.save
               end
@@ -203,7 +157,7 @@ class RecipesController < ApplicationController
   def destroy
     @recipe.destroy
     respond_to do |format|
-      format.html { redirect_to recipes_url, notice: 'Recipe was successfully destroyed.' }
+      format.html { redirect_to current_user, notice: 'Recipe was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -235,7 +189,29 @@ class RecipesController < ApplicationController
     @units = ["dl", "l", "g", "kg", "tbsp", "tsp", "-", "pcs", "cups"]
   end
 
-  def create_recipes(ings, everything_valid)
+  def create_subsections(subsections, everything_valid)
+    subsections_h = {}
+
+    (0..subsections.length-1).each do |i|
+      subsection = subsections[i]
+      @subsection = Subsection.new
+      @subsection.title = subsection[:title]
+      everything_valid = false unless @subsection.valid?
+      ings = subsection[:ings]
+      subsection_h = {}
+      subsection_h["s"] = @subsection
+
+      sub_ings_h, ings_h, everything_valid = create_sub_ings_n_ings(ings, everything_valid)
+
+      subsection_h["si"] = sub_ings_h
+      subsection_h["ings"]= ings_h
+      subsections_h[i] = subsection_h
+    end
+
+    [subsections_h, everything_valid]
+  end
+
+  def create_sub_ings_n_ings(ings, everything_valid)
     sub_ings_h = {}
     ings_h = {}
 
@@ -246,12 +222,33 @@ class RecipesController < ApplicationController
       @subsection_ingredient.unit = ing[:unit]
       @ingredient = Ingredient.new
       @ingredient.name = ing[:name]
-      everything_valid = false if not @subsection_ingredient.valid?
-      everything_valid = false if not @ingredient.valid?
+      everything_valid = false unless @subsection_ingredient.valid?
+      everything_valid = false unless @ingredient.valid?
       sub_ings_h[j] = @subsection_ingredient
       ings_h[j] = @ingredient
     end
 
     [sub_ings_h, ings_h, everything_valid]
+  end
+
+  def save_subs_n_ings(subsections_h)
+    (0..subsections_h.length-1).each do |i|
+      @subsection = subsections_h[i]["s"]
+      @subsection.recipe = @recipe
+      @subsection.save
+      sub_ings = subsections_h[i]["si"]
+      ings = subsections_h[i]["ings"]
+      (0..ings.length-1).each do |j|
+        @subsection_ingredient = sub_ings[j]
+        @ingredient = Ingredient.find_by_name(ings[j].name)
+        if not @ingredient
+          @ingredient = ings[j]
+          @ingredient.save
+        end
+        @subsection_ingredient.subsection = @subsection
+        @subsection_ingredient.ingredient = @ingredient
+        @subsection_ingredient.save
+      end
+    end
   end
 end

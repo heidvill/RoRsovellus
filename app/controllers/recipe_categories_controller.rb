@@ -1,5 +1,6 @@
 class RecipeCategoriesController < ApplicationController
   before_action :set_recipe_category, only: [:destroy]
+  before_action :ensure_that_signed_in
 
   def new
     @recipe_category = RecipeCategory.new

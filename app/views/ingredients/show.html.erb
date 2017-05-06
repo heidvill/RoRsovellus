@@ -5,5 +5,5 @@
 <% end %>
 
 <br>
-<%= link_to 'Edit', edit_ingredient_path(@ingredient) %>
-<%= link_to 'Destroy', @ingredient, method: :delete, data: { confirm: 'Are you sure?' } %>
+<%= link_to 'Edit', edit_ingredient_path(@ingredient), class:"btn btn-primary" %>
+<%= link_to 'Destroy', @ingredient, method: :delete, data: { confirm: 'Are you sure?' }, class:'btn btn-danger' %>

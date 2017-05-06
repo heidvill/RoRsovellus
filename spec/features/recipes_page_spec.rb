@@ -31,11 +31,12 @@ describe "Recipes page" do
   end
 end
 
-
 describe "Recipe" do
 
   before :each do
     WebMock.disable_net_connect!(allow_localhost:true)
+    FactoryGirl.create :user
+    sign_in(username: "jack", password: "Word1")
   end
 
   it "when filled with acceptable inputs, is added to the db", js:true do

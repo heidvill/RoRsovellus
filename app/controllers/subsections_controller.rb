@@ -1,5 +1,6 @@
 class SubsectionsController < ApplicationController
   before_action :set_subsection, only: [:destroy]
+  before_action :ensure_that_signed_in
 
   def destroy
     @recipe = @subsection.recipe

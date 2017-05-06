@@ -51,8 +51,6 @@ var addIngredient = function (n) {
         span.className = "glyphicon glyphicon-remove";
         button.appendChild(span);
         div4.appendChild(button);
-
-        section_ingredients.appendChild(document.createElement("br"));
     }
 };
 
@@ -125,7 +123,15 @@ Object.size = function (obj) {
 };
 
 var error_count = function (errors) {
-
+    var count = 0;
+    for (var key1 in errors) {
+        for (var key2 in errors[key1]) {
+            if (Object.size(errors[key1])) {
+                count++;
+            }
+        }
+    }
+    return count;
 };
 
 var showErrors = function (errors) {
@@ -138,7 +144,7 @@ var showErrors = function (errors) {
     document.getElementById('errors').appendChild(div);
 
     var h2 = document.createElement("h2"),
-        text = document.createTextNode("error probited this recipe from being saved");
+        text = document.createTextNode(error_count(errors)+" error(s) probited this recipe from being saved");
     h2.appendChild(text);
     document.getElementById('error_explanation').appendChild(h2);
 

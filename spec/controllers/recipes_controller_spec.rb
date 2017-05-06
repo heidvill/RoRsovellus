@@ -19,6 +19,11 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe RecipesController, type: :controller do
+  let!(:user) { FactoryGirl.create :user }
+
+  before :each do
+    allow(controller).to receive_messages(:current_user => user)
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Recipe. As you add validations to Recipe, be sure to
@@ -76,43 +81,78 @@ RSpec.describe RecipesController, type: :controller do
 
   describe "POST #create" do
     context "with valid params" do
-      it "creates a new Recipe" do #js:true ?
+      let(:valid_params) {
+        {data: {name: "Cake", amount: "4", time_h: "1", time_min: "30",
+                subsections: [{title: 'cake', ings: [{amount: 5, unit: 'dl', name: 'flour'}]}],
+                description: "Mix"}}
+      }
+
+      it "creates a new Recipe" do
         expect {
-          post :create, xhr: true, params: {data:{name: "Cake", amount: "4", time_h:"1", time_min: "30",
-                                                  subsections:[{title:'cake', ings:[{amount: 5, unit:'dl', name: 'flour'}]}],
-                                                  description:"Mix"}}
-         }.to change(Recipe, :count).by(1)
+          post :create, xhr: true, params: valid_params
+        }.to change(Recipe, :count).by(1)
         #post :create, params: {ingredient: valid_attributes}, session: valid_session
         # post :create, xhr: true, params: {data:{name: "Cake", amount: "4", time_h:"1", time_min: "30", description:"Mix"}}
       end
 
       it "assigns a newly created recipe as @recipe" do
-        post :create, xhr: true, params: {data:{name: "Cake", amount: "4", time_h:"1", time_min: "30",
-                                                subsections:[{title:'cake', ings:[{amount: 5, unit:'dl', name: 'flour'}]}],
-                                                description:"Mix"}}
+        post :create, xhr: true, params: valid_params
         expect(assigns(:recipe)).to be_a(Recipe)
         expect(assigns(:recipe)).to be_persisted
       end
     end
 
     context "with invalid params" do
+      let(:invalid_params) {
+        {data: {name: "", amount: "", time_h: "1", time_min: "30",
+                subsections: [{title: 'cake', ings: [{amount: 5, unit: 'dl', name: ''}]}],
+                description: "Mix"}}
+      }
       it "assigns a newly created but unsaved recipe as @recipe" do
-        post :create, xhr: true, params: {data:{name: "", amount: "", time_h:"1", time_min: "30",
-                                                subsections:[{title:'cake', ings:[{amount: 5, unit:'dl', name: ''}]}],
-                                                description:"Mix"}}
+        post :create, xhr: true, params: invalid_params
         expect(assigns(:recipe)).to be_a_new(Recipe)
       end
 
       it "gives unprocessable entity" do
-        post :create, xhr: true, params: {data:{name: "", amount: "", time_h:"1", time_min: "30",
-                                                subsections:[{title:'cake', ings:[{amount: 5, unit:'dl', name: ''}]}],
-                                                description:"Mix"}}
+        post :create, xhr: true, params: invalid_params
         expect(response.status).to eq(422)
       end
     end
   end
+=begin
+  describe "PUT #update" do
 
+    context "with valid params" do
+      let(:valid_params) {
+        {data: {id: "1", amount: "4", time_h: "1", time_min: "30",
+                subsections: [{title: 'cake', ings: [{amount: 5, unit: 'dl', name: 'flour'}]}],
+                description: "Mix both"}}
+      }
 
+      it "with only one ingredient added it updates" do
+        @recipe = recipe_with_subs_n_ings
+        put :update, :id => @recipe.id+1, xhr: true, params: valid_params
+        expect(recipe.description).to eq("Mix both")
+      end
+
+      it "with new subsection it updates" do
+
+      end
+    end
+
+    context "with invalid params" do
+      it ""
+    end
+  end
+
+  def recipe_with_subs_n_ings
+    @recipe = Recipe.create name: "Cake", amount: 10, duration: 30, description: "Mix", user_id: user.id
+    @ing = Ingredient.create name: "ing1"
+    @subsection = Subsection.create title:"cake", recipe_id: @recipe.id
+    @subsection_ingredient = SubsectionIngredient.create amount:1, unit: "dl", ingredient_id: @ing.id, subsection_id: @subsection.id
+    @recipe
+  end
+=end
   describe "DELETE #destroy" do
     it "destroys the requested recipe" do
       recipe = Recipe.create! valid_attributes
@@ -124,8 +164,7 @@ RSpec.describe RecipesController, type: :controller do
     it "redirects to the recipes list" do
       recipe = Recipe.create! valid_attributes
       delete :destroy, params: {id: recipe.to_param}, session: valid_session
-      expect(response).to redirect_to(recipes_url)
+      expect(response).to redirect_to(user_path(1))
     end
   end
-
 end

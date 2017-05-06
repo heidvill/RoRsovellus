@@ -1,19 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe RecipeCategoriesController, type: :controller do
-  before (:each) do
+  let!(:user) {FactoryGirl.create :user}
+
+  before :each do
     FactoryGirl.create(:recipe)
+    allow(controller).to receive_messages(:current_user => user)
   end
 
   # This should return the minimal set of attributes required to create a valid
   # Category. As you add validations to Category, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {recipe_id:1, category_id:1}
+    {recipe_id: 1, category_id: 1}
   }
 
   let(:invalid_attributes) {
-    {recipe_id:nil, category_id:nil}
+    {recipe_id: nil, category_id: nil}
   }
 
   # This should return the minimal set of values that should be in the session

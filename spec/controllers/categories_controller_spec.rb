@@ -19,6 +19,11 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe CategoriesController, type: :controller do
+  let!(:user) {FactoryGirl.create :user}
+
+  before :each do
+    allow(controller).to receive_messages(:current_user => user)
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Category. As you add validations to Category, be sure to

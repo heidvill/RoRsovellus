@@ -1,10 +1,11 @@
 <h2><%= @category.name %></h2>
 
 <% @category.recipes.each do |recipe| %>
-    <li><%=link_to recipe.name, recipe %></li>
+    <li><%= link_to recipe.name, recipe %></li>
 <% end %>
 <br>
 
-<%= link_to 'Edit', edit_category_path(@category) %>
-<%= link_to 'Destroy', @category, method: :delete, data: { confirm: 'Are you sure?' } %>
-
+<% if current_user %>
+    <%= link_to 'Edit', edit_category_path(@category), class: "btn btn-primary" %>
+    <%= link_to 'Destroy', @category, method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+<% end %>

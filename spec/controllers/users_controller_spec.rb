@@ -116,30 +116,26 @@ RSpec.describe UsersController, type: :controller do
 
     context "with valid params" do
       let(:new_attributes) {
-        {username: nil,
-         password: 'Secret55',
+        {password: 'Secret55',
          password_confirmation: 'Secret55'}
       }
-=begin
+
       it "updates the requested user" do
-        #user = User.create! valid_attributes
         put :update, params: {id: user.to_param, user: new_attributes}, session: valid_session
-        user.reload
-        expect(user.password).to eq(new_attributes[:password])
+        expect(assigns(:user).password).to eq(new_attributes[:password])
       end
-=end
+
 
       it "assigns the requested user as @user" do
-        put :update, params: {id: user.to_param, user: valid_attributes}, session: valid_session
+        put :update, params: {id: user.to_param, user: new_attributes}, session: valid_session
         expect(assigns(:user)).to eq(user)
       end
-=begin
+
       it "redirects to the user" do
-        user = User.create! valid_attributes
-        put :update, params: {id: user.to_param, user: valid_attributes}, session: valid_session
+        put :update, params: {id: user.to_param, user: new_attributes}, session: valid_session
         expect(response).to redirect_to(user)
       end
-=end
+
     end
 
     context "with invalid params" do

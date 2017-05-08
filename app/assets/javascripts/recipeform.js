@@ -29,7 +29,7 @@ var addIngredient = function (n) {
 
         var select = document.createElement("select");
         select.id = "subsection_ingredient_unit";
-        select.name = "subsection_ingredient[name]";
+        select.name = "subsection_ingredient[unit]";
         var units = ["dl", "l", "g", "kg", "tbsp", "tsp", "-", "pcs", "cups"];
         units.forEach(function (item) {
             var option = document.createElement("option");

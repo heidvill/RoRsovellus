@@ -87,18 +87,22 @@ RSpec.describe RecipesController, type: :controller do
                 description: "Mix"}}
       }
 
-      it "creates a new Recipe" do
+      it "creates a new Recipe with xhr true" do
         expect {
           post :create, xhr: true, params: valid_params
         }.to change(Recipe, :count).by(1)
-        #post :create, params: {ingredient: valid_attributes}, session: valid_session
-        # post :create, xhr: true, params: {data:{name: "Cake", amount: "4", time_h:"1", time_min: "30", description:"Mix"}}
       end
 
-      it "assigns a newly created recipe as @recipe" do
+      it "assigns a newly created recipe as @recipe with xhr true" do
         post :create, xhr: true, params: valid_params
         expect(assigns(:recipe)).to be_a(Recipe)
         expect(assigns(:recipe)).to be_persisted
+      end
+
+      it "creates a new Recipe" do
+        expect {
+          post :create, params: valid_params, session: valid_session
+        }.to change(Recipe, :count).by(1)
       end
     end
 
@@ -119,40 +123,72 @@ RSpec.describe RecipesController, type: :controller do
       end
     end
   end
-=begin
+
   describe "PUT #update" do
+    let!(:user) {FactoryGirl.create :user}
+    let!(:recipe) {recipe_with_subs_n_ings}
+
+    before :each do
+      allow(controller).to receive_messages(:current_user => user)
+    end
 
     context "with valid params" do
-      let(:valid_params) {
-        {data: {id: "1", amount: "4", time_h: "1", time_min: "30",
-                subsections: [{title: 'cake', ings: [{amount: 5, unit: 'dl', name: 'flour'}]}],
-                description: "Mix both"}}
+      let(:valid_params_one_ing) {
+        {id: recipe.to_param, data: {id: "1", amount: "4", time_h: "1", time_min: "30",
+                                     subsections: [{title: 'cake', ings: [{amount: 5, unit: 'dl', name: 'flour'}]}],
+                                     description: "Mix both"}}
+      }
+
+      let(:valid_params_new_sub) {
+        {id: recipe.to_param, data: {id: "1", amount: "4", time_h: "1", time_min: "30",
+                                     subsections: [{title: 'cake', ings: [{amount: 5, unit: 'dl', name: 'flour'}]},
+                                     {title: 'filling', ings: [{amount: 2, unit: 'pcs', name: 'banana'}]}],
+                                     description: "Mix"}}
       }
 
       it "with only one ingredient added it updates" do
-        @recipe = recipe_with_subs_n_ings
-        put :update, :id => @recipe.id+1, xhr: true, params: valid_params
-        expect(recipe.description).to eq("Mix both")
+        r = recipe
+        put :update, xhr: true, params: valid_params_one_ing
+
+        expect(assigns(:recipe).description).not_to eq(r)
+        expect(assigns(:recipe).description).to eq("Mix both")
+        expect(assigns(:recipe).ingredients.length).to be(2)
       end
 
       it "with new subsection it updates" do
+        r = recipe
+        put :update, xhr: true, params: valid_params_new_sub
 
+        expect(assigns(:recipe).description).not_to eq(r)
+        expect(assigns(:recipe).subsections.length).to eq(2)
+        expect(assigns(:recipe).ingredients.length).to be(3)
       end
     end
 
     context "with invalid params" do
-      it ""
+      let(:invalid_params) {
+        {id: recipe.to_param, data: {id: "1", amount: "", time_h: "", time_min: "",
+                                     subsections: [{title: 'cake', ings: [{amount: 5, unit: 'dl', name: ''}]}],
+                                     description: ""}}
+      }
+
+      it "will not update" do
+        r = recipe
+        put :update, xhr: true, params: invalid_params
+        expect(assigns(:recipe)).to eq(r)
+      end
+
     end
   end
 
   def recipe_with_subs_n_ings
-    @recipe = Recipe.create name: "Cake", amount: 10, duration: 30, description: "Mix", user_id: user.id
-    @ing = Ingredient.create name: "ing1"
-    @subsection = Subsection.create title:"cake", recipe_id: @recipe.id
-    @subsection_ingredient = SubsectionIngredient.create amount:1, unit: "dl", ingredient_id: @ing.id, subsection_id: @subsection.id
-    @recipe
+    recipe = Recipe.create name: "Cake", amount: 10, duration: 30, description: "Mix", user_id: user.id
+    ing = Ingredient.create name: "ing1"
+    subsection = Subsection.create title:"cake", recipe_id: recipe.id
+    subsection_ingredient = SubsectionIngredient.create amount:1, unit: "dl", ingredient_id: ing.id, subsection_id: subsection.id
+    recipe
   end
-=end
+
   describe "DELETE #destroy" do
     it "destroys the requested recipe" do
       recipe = Recipe.create! valid_attributes

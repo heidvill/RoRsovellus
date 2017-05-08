@@ -32,12 +32,12 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.json
   def create
+    @recipe = Recipe.new(recipe_params)
+    hours = params.require(:data).permit(:time_h)[:time_h].to_i
+    mins = params.require(:data).permit(:time_min)[:time_min].to_i
+    @recipe.duration = hours * 60 + mins
+    @recipe.user = current_user
     if request.xhr?
-      @recipe = Recipe.new(recipe_params)
-      hours = params.require(:data).permit(:time_h)[:time_h].to_i
-      mins = params.require(:data).permit(:time_min)[:time_min].to_i
-      @recipe.duration = hours * 60 + mins
-      @recipe.user = current_user
       everything_valid = @recipe.valid?
 
       subsections = subsection_params[:subsections]
@@ -56,14 +56,7 @@ class RecipesController < ApplicationController
       end
     else
       respond_to do |format|
-        if @recipe.save and @ingredient.save and @subsection.save and @subsection_ingredient
-
-          @subsection.recipe = @recipe
-          @subsection_ingredient.subsection = @subsection
-          @subsection_ingredient.ingredient = @ingredient
-          @subsection.save
-          @subsection_ingredient.save
-
+        if @recipe.save
           format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
           format.json { render :show, status: :created, location: @recipe }
           #format.js {render :json => {:location => url_for(recipes_path)}, notice: 'Tulee tänne.'}
@@ -83,6 +76,8 @@ class RecipesController < ApplicationController
       hours = params.require(:data).permit(:time_h)[:time_h].to_i
       mins = params.require(:data).permit(:time_min)[:time_min].to_i
       @recipe.duration = hours * 60 + mins
+      @recipe.description = params.require(:data).permit(:description)[:description]
+      @recipe.amount = params.require(:data).permit(:amount)[:amount]
       everything_valid = @recipe.valid?
 
       subsections = subsection_params[:subsections]

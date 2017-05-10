@@ -6,7 +6,7 @@ class IngredientsController < ApplicationController
   # GET /ingredients.json
   def index
     @ingredients = Ingredient.all
-    @ingredients.sort_by{|i| i.name.downcase}
+    @ingredients = Ingredient.order(:name.upcase)
   end
 
   # GET /ingredients/1

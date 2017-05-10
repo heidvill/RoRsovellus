@@ -9,8 +9,10 @@ class RecipesController < ApplicationController
     @recipes = Recipe.all
     order = params[:order] || 'name'
     @recipes = case order
-                 when 'name' then Recipe.order(:name)
-                   when 'added' then Recipe.order(created_at: :desc)
+                 when 'name' then
+                   Recipe.order(:name)
+                 when 'added' then
+                   Recipe.order(created_at: :desc)
                end
   end
 
@@ -42,7 +44,10 @@ class RecipesController < ApplicationController
       everything_valid = @recipe.valid?
 
       subsections = subsection_params[:subsections]
-      subsections_h, everything_valid = create_subsections(subsections, everything_valid)
+
+      returned = create_subsections(subsections, everything_valid)
+      subsections_h = returned[0]
+      everything_valid = returned[1]
 
       if everything_valid
         @recipe.save
@@ -51,9 +56,9 @@ class RecipesController < ApplicationController
         flash[:notice] = 'Recipe was successfully created!'
         flash.keep(:notice)
 
-        render :json => {:location => url_for(recipes_path)}
+        render :json => {:location => url_for(recipe_path(@recipe.id))}
       else
-        render :json => {:recipe_errors => @recipe.errors, :subsection_errors => @subsection.errors, :si_errors => @subsection_ingredient.errors, :ingredient_errors => @ingredient.errors}, :status => 422
+        render :json => {:recipe_errors => [@recipe.errors], :subsection_errors => returned[2], :si_errors => returned[3], :ingredient_errors => returned[4]}, :status => 422
       end
     else
       respond_to do |format|
@@ -80,18 +85,25 @@ class RecipesController < ApplicationController
       everything_valid = @recipe.valid?
 
       subsections = subsection_params[:subsections]
-      subsections_h, everything_valid = update_subsections(subsections, everything_valid)
+
+      returned = update_subsections(subsections, everything_valid)
+      subsections_h = returned[0]
+      everything_valid = returned[1]
 
       if everything_valid
         @recipe.save
-        save_subs_n_ings(subsections_h)
+        save_subs_n_ings(subsections_h) unless subsections_h.empty?
 
-        flash[:notice] = 'Recipe was successfully updated!!!'
+        flash[:notice] = 'Recipe was successfully updated!'
         flash.keep(:notice)
 
         render :json => {:location => url_for(recipe_path(@recipe.id))}
       else
-        render :json => {:recipe_errors => @recipe.errors, :subsection_errors => @subsection.errors, :si_errors => @subsection_ingredient.errors, :ingredient_errors => @ingredient.errors}, :status => 422
+        subsection_errors = returned[2]
+        sub_ing_errors = returned[3]
+        ing_errors = returned[4]
+
+        render :json => {:recipe_errors => [@recipe.errors], :subsection_errors => subsection_errors, :si_errors => sub_ing_errors, :ingredient_errors => ing_errors}, :status => 422
       end
     else
       respond_to do |format|
@@ -145,29 +157,42 @@ class RecipesController < ApplicationController
 
   def create_subsections(subsections, everything_valid)
     subsections_h = {}
+    subsection_errors = []
+    sub_ing_errors = []
+    ing_errors = []
 
     (0..subsections.length-1).each do |i|
       subsection = subsections[i]
       @subsection = Subsection.new
       @subsection.title = subsection[:title]
       everything_valid = false unless @subsection.valid?
+      subsection_errors.push @subsection.errors unless @subsection.valid?
       ings = subsection[:ings]
       subsection_h = {}
       subsection_h["s"] = @subsection
 
-      sub_ings_h, ings_h, everything_valid = create_sub_ings_n_ings(ings, everything_valid)
+      #sub_ings_h, ings_h, everything_valid = create_sub_ings_n_ings(ings, everything_valid)
+
+      returned = create_sub_ings_n_ings(ings, everything_valid)
+      sub_ings_h = returned[0]
+      ings_h = returned[1]
+      everything_valid = returned[2]
+      sub_ing_errors.push(*returned[3])
+      ing_errors.push(*returned[4])
 
       subsection_h["si"] = sub_ings_h
       subsection_h["ings"]= ings_h
       subsections_h[i] = subsection_h
     end
 
-    [subsections_h, everything_valid]
+    [subsections_h, everything_valid, subsection_errors, sub_ing_errors, ing_errors]
   end
 
   def create_sub_ings_n_ings(ings, everything_valid)
     sub_ings_h = {}
     ings_h = {}
+    sub_ing_error = []
+    ing_error = []
 
     (0..ings.length-1).each do |j|
       ing = ings[j]
@@ -176,13 +201,17 @@ class RecipesController < ApplicationController
       @subsection_ingredient.unit = ing[:unit]
       @ingredient = Ingredient.new
       @ingredient.name = ing[:name]
+
       everything_valid = false unless @subsection_ingredient.valid?
       everything_valid = false unless @ingredient.valid?
+      sub_ing_error.push(@subsection_ingredient.errors) unless @subsection_ingredient.valid?
+      ing_error.push(@ingredient.errors) unless @ingredient.valid?
+
       sub_ings_h[j] = @subsection_ingredient
       ings_h[j] = @ingredient
     end
 
-    [sub_ings_h, ings_h, everything_valid]
+    [sub_ings_h, ings_h, everything_valid, sub_ing_error, ing_error]
   end
 
   def save_subs_n_ings(subsections_h)
@@ -214,23 +243,40 @@ class RecipesController < ApplicationController
 
   def update_subsections(subsections, everything_valid)
     subsections_h = {}
+    subsection_errors = []
+    sub_ing_errors = []
+    ing_errors = []
+
     (0..subsections.length-1).each do |i|
       subsection = subsections[i]
       @subsection = Subsection.new
       @subsection.title = subsection[:title]
+
       everything_valid = false unless @subsection.valid?
-      ings = subsection[:ings]
+      subsection_errors.push(@subsection.errors) unless @subsection.valid?
+
       subsection_h = {}
       subsection_h["s"] = @subsection
 
+      ings = subsection[:ings]
+      were_there_any_ings = false
+
       unless ings.nil?
-        sub_ings_h, ings_h, everything_valid = create_sub_ings_n_ings(ings, everything_valid)
+        returned = create_sub_ings_n_ings(ings, everything_valid)
+
+        sub_ings_h = returned[0]
+        ings_h = returned[1]
+        everything_valid = returned[2]
+        sub_ing_errors.push(*returned[3])
+        ing_errors.push(*returned[4])
+
         subsection_h["si"] = sub_ings_h
         subsection_h["ings"]= ings_h
+        were_there_any_ings = true;
       end
-      subsections_h[i] = subsection_h
+      subsections_h[i] = subsection_h if were_there_any_ings
     end
 
-    [subsections_h, everything_valid]
+    [subsections_h, everything_valid, subsection_errors, sub_ing_errors, ing_errors]
   end
 end

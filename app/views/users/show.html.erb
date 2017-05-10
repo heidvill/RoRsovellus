@@ -4,7 +4,7 @@
   <% if @user.recipes.empty? %>
       You don't have any recipes.
   <% else %>
-      has added <%= pluralize(@user.recipes.count, 'recipe') %>
+      has <%= pluralize(@user.recipes.count, 'recipe') %>
   <% end %></p>
 
 <h3>Recipes</h3>
@@ -14,13 +14,13 @@
         <%= link_to recipe.name, recipe %>
         <% if @user == current_user %>
             <%= link_to 'edit', edit_recipe_path(recipe) %>
-            <%= link_to 'delete', recipe, method: :delete, data: {confirm: 'Are you sure?'} %>
+            <%= link_to 'X', recipe, method: :delete, data: {confirm: 'Are you sure?'} %>
         <% end %>
       </li>
   <% end %>
 </ul>
 
 <% if @user == current_user %>
-    <%= link_to 'Edit', edit_user_path(@user), class:"btn btn-primary" %> |
-    <%= link_to 'Destroy user', @user, method: :delete, data: {confirm: 'Are you sure?'}, class:'btn btn-danger' %> |
+    <%= link_to 'Change password', edit_user_path(@user), class:"btn btn-primary" %>
+    <%= link_to 'Destroy user', @user, method: :delete, data: {confirm: 'Are you sure?'}, class:'btn btn-danger' %>
 <% end %>

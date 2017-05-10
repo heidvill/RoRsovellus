@@ -56,12 +56,9 @@ describe "New recipe" do
 
     fill_in('recipe_description', with: "Wash and cut")
 
-    # expect {
-    #  click_button "Create Recipe"
-    #}.to change{ Recipe.count }.from(0).to(1)
-
     click_button "Create Recipe"
     sleep 2
+
     expect(Recipe.count).to eq(1)
   end
 end

@@ -111,7 +111,7 @@ describe "User page" do
     sign_in(username: "jack", password: "Word1")
 
     visit user_path(user)
-    page.find('li', :text => 'Rice').click_link('delete')
+    page.find('li', :text => 'Rice').click_link('X')
 
     expect(page).to have_content "Cake"
     expect(page).not_to have_content "Rice"

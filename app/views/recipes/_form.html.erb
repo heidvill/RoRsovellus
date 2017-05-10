@@ -17,18 +17,18 @@
 
     <div class="field">
       <%= f.label :name %>
-      <%= f.text_field :name, :value => 'Kakku' %>
+      <%= f.text_field :name, placeholder: 'name'%>
     </div>
 
     <div class="field">
       <%= f.label :amount %>
-      <%= f.number_field :amount, :value => 4 %>
+      <%= f.number_field :amount, placeholder: 'how many' %> person(s)
     </div>
 
     <div class="field">
       <%= f.label :duration %>
-      <%= f.number_field :time_h, :value => 1 %> h
-      <%= f.number_field :time_min, :value => 30 %> min
+      <%= f.number_field :time_h, :value => "", placeholder: "hours" %> h
+      <%= f.number_field :time_min, :value => "", placeholder: "minutes" %> min
     </div>
 
     <div id="subsections">
@@ -38,7 +38,7 @@
         <%= fields_for @recipe.subsections do |s_f| %>
             <div class="field">
               Section <br>
-              <%= s_f.text_field :title, :id => "subsection_title1", :class => "subsection_title", :value => 'Pohja' %>
+              <%= s_f.text_field :title, :id => "subsection_title1", :class => "subsection_title", :value => '', placeholder: "Section (can be left blank)" %>
             </div>
 
             <div id="ingredients1" class="ingredients">
@@ -49,20 +49,19 @@
                         <div class="col-md-1">
                           <div class="field">
                             Amount <br>
-                            <%= si_f.text_field :amount, :value => 5 %>
+                            <%= si_f.text_field :amount, :value => '', placeholder: 'amount' %>
                           </div>
                         </div>
                         <div class="col-md-1">
                           <div class="field">
                             Unit <br>
-                            <%#= si_f.text_field :unit, :value => 'dl' %>
                             <%= select("subsection_ingredient", "unit", @units) %>
                           </div>
                         </div>
                         <div class="col-md-1">
                           <div class="field">
                             Ingredient <br>
-                            <%= i_f.text_field :name, :value => 'jauho' %>
+                            <%= i_f.text_field :name, :value => '', placeholder: 'ingredient' %>
                           </div>
                         </div>
                       </div> <!-- row -->
@@ -81,7 +80,7 @@
 
     <div class="field">
       <%= f.label :description %>
-      <%= f.text_area :description, :value => 'Sekoita' %>
+      <%= f.text_area :description %>
     </div>
     <% if @recipe.new_record? %>
         <div class="actions" , id="create_recipe">

@@ -140,17 +140,17 @@ RSpec.describe RecipesController, type: :controller do
       }
 
       let(:valid_params_new_sub) {
-        {id: recipe.to_param, data: {id: "1", amount: "4", time_h: "1", time_min: "30",
-                                     subsections: [{title: 'cake', ings: [{amount: 5, unit: 'dl', name: 'flour'}]},
-                                     {title: 'filling', ings: [{amount: 2, unit: 'pcs', name: 'banana'}]}],
-                                     description: "Mix"}}
+        {id: recipe.to_param,
+         data: {id: "1", amount: "4", time_h: "1", time_min: "30",
+                subsections: [{title: 'filling', ings: [{amount: 2, unit: 'pcs', name: 'banana'}]}],
+                description: "Mix"}}
       }
 
       it "with only one ingredient added it updates" do
         r = recipe
         put :update, xhr: true, params: valid_params_one_ing
 
-        expect(assigns(:recipe).description).not_to eq(r)
+        expect(assigns(:recipe).description).not_to eq(r.description)
         expect(assigns(:recipe).description).to eq("Mix both")
         expect(assigns(:recipe).ingredients.length).to be(2)
       end
@@ -159,9 +159,11 @@ RSpec.describe RecipesController, type: :controller do
         r = recipe
         put :update, xhr: true, params: valid_params_new_sub
 
-        expect(assigns(:recipe).description).not_to eq(r)
+        expect(assigns(:recipe).description).to eq(r.description)
         expect(assigns(:recipe).subsections.length).to eq(2)
-        expect(assigns(:recipe).ingredients.length).to be(3)
+        expect(assigns(:recipe).ingredients.length).to be(2)
+        expect(assigns(:recipe).subsections.last.subsection_ingredients.length).to eq(1)
+        expect(assigns(:recipe).subsections.first.subsection_ingredients.length).to eq(1)
       end
     end
 

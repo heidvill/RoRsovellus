@@ -3,63 +3,80 @@ var section_queue = [2, 3, 4, 5];
 var addIngredient = function (n) {
     var section_ingredients = document.getElementById('ingredients' + n);
     var ingredients_size = section_ingredients.getElementsByClassName("row").length;
+
     if (ingredients_size < 15) {
-        var div = document.createElement("div");
-        div.className = "row";
+        var div = createDiv("row");
         section_ingredients.appendChild(div);
 
-        var div1 = document.createElement("div");
-        div1.className = "col-md-1";
-        var div2 = document.createElement("div");
-        div2.className = "col-md-1";
-        var div3 = document.createElement("div");
-        div3.className = "col-md-1";
-        var div4 = document.createElement("div");
-        div4.className = "col-md-1";
+        var div1 = createDiv("col-md-1");
+        var div2 = createDiv("col-md-1");
+        var div3 = createDiv("col-md-1");
+        var div4 = createDiv("col-md-1");
         div.appendChild(div1);
         div.appendChild(div2);
         div.appendChild(div3);
         div.appendChild(div4);
 
-        var input1 = document.createElement("input");
-        input1.type = "text";
-        input1.id = "subsection_ingredient_amount";
-        input1.placeholder = "amount";
+        var input1 = createtInput("text", "subsection_ingredient_amount", "amount");
         div1.appendChild(input1);
 
-        var select = document.createElement("select");
-        select.id = "subsection_ingredient_unit";
-        select.name = "subsection_ingredient[unit]";
-        var units = ["dl", "l", "g", "kg", "tbsp", "tsp", "-", "pcs", "cups"];
-        units.forEach(function (item) {
-            var option = document.createElement("option");
-            option.innerHTML = item;
-            select.appendChild(option)
-        });
+        var select = createSelect();
         div2.appendChild(select);
 
-        var input3 = document.createElement("input");
-        input3.type = "text";
-        input3.id = "ingredient_name";
-        input3.placeholder = "ingredient";
+        var input3 = createtInput("text", "ingredient_name", "ingredient");
         div3.appendChild(input3);
 
-        var button = document.createElement("button");
-        button.type = "button";
-        button.className = "btn btn-default r";
-        var span = document.createElement("span");
-        span.className = "glyphicon glyphicon-remove";
-        button.appendChild(span);
+        var button = createRemoveButton();
         div4.appendChild(button);
     }
+};
+
+var createDiv = function (className) {
+    var div = document.createElement("div");
+    div.className = className;
+
+    return div
+}
+
+var createtInput = function (type, id, placeholder) {
+    var input = document.createElement("input");
+    input.type = type;
+    input.id = id;
+    input.placeholder = placeholder;
+
+    return input
+};
+
+var createSelect = function () {
+    var select = document.createElement("select");
+    select.id = "subsection_ingredient_unit";
+    select.name = "subsection_ingredient[unit]";
+    var units = ["dl", "l", "g", "kg", "tbsp", "tsp", "-", "pcs", "cups"];
+    units.forEach(function (item) {
+        var option = document.createElement("option");
+        option.innerHTML = item;
+        select.appendChild(option)
+    });
+
+    return select
+};
+
+var createRemoveButton = function () {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn btn-default r";
+    var span = document.createElement("span");
+    span.className = "glyphicon glyphicon-remove";
+    button.appendChild(span);
+
+    return button
 };
 
 var addSubsection = function () {
     if (section_queue.length > 0) {
         var section_i = section_queue.shift();
-        var div = document.createElement("div");
+        var div = createDiv("subsection");
         div.id = "subsection" + section_i;
-        div.className = "subsection";
         document.getElementById('subsections').appendChild(div);
 
         var div_title = document.createElement("div"),
@@ -71,23 +88,12 @@ var addSubsection = function () {
         div_title.appendChild(text);
         div_title.appendChild((document.createElement("br")));
 
-        var input = document.createElement("input");
-        input.type = "text";
-        input.id = "subsection_title" + section_i;
+        var input = createtInput("text", "subsection_title" + section_i, "Section");
         input.className = "subsection_title";
         div_title.appendChild(input);
 
-        var button_r = document.createElement("button"),
-            text_r = document.createTextNode(" Section and its ingredients");
-        button_r.type = "button";
-        button_r.id = "remove";
-        button_r.className = "btn btn-default r";
+        var button_r = createRemoveButtonWithText(" Section and its ingredients", "remove", "btn btn-default r", "glyphicon glyphicon-remove");
 
-        var span_r = document.createElement("span");
-        span_r.className = "glyphicon glyphicon-remove";
-
-        button_r.appendChild(span_r);
-        button_r.appendChild(text_r);
         div_title.appendChild(button_r);
         div_title.appendChild((document.createElement("br")));
 
@@ -99,19 +105,42 @@ var addSubsection = function () {
 
         addIngredient(section_i);
 
-        var button = document.createElement("button"),
-            text = document.createTextNode("Ingredient");
-        button.type = "button";
-        button.id = "addI" + section_i;
-        button.className = "btn btn-default i";
+        var button = createAddIngButtonWithText("Ingredient", "addI", section_i, "btn btn-default i", "glyphicon glyphicon-plus");
 
-        var span = document.createElement("span");
-        span.className = "glyphicon glyphicon-plus";
-
-        button.appendChild(span);
-        button.appendChild(text);
         div.appendChild(button)
     }
+};
+
+var createRemoveButtonWithText = function (text, id, className, spanClassname) {
+    var button = document.createElement("button"),
+        text = document.createTextNode(text);
+    button.type = "button";
+    button.id = id;
+    button.className = className;
+
+    var span = document.createElement("span");
+    span.className = spanClassname;
+
+    button.appendChild(span);
+    button.appendChild(text);
+
+    return button
+};
+
+var createAddIngButtonWithText = function (text, id, index, classname, spanClassname) {
+    var button = document.createElement("button"),
+        text = document.createTextNode(text);
+    button.type = "button";
+    button.id = id + index;
+    button.className = classname;
+
+    var span = document.createElement("span");
+    span.className = spanClassname;
+
+    button.appendChild(span);
+    button.appendChild(text);
+
+    return button
 };
 
 Object.size = function (obj) {
@@ -126,8 +155,10 @@ var error_count = function (errors) {
     var count = 0;
     for (var key1 in errors) {
         for (var key2 in errors[key1]) {
-            if (Object.size(errors[key1])) {
-                count++;
+            for (var key3 in errors[key1][key2]) {
+                if (Object.size(errors[key1])) {
+                    count++;
+                }
             }
         }
     }
@@ -135,6 +166,8 @@ var error_count = function (errors) {
 };
 
 var showErrors = function (errors) {
+    $('html, body').animate({scrollTop: 0}, 'fast');
+
     if (document.getElementById("errors").childElementCount > 0) {
         document.getElementById('error_explanation').remove()
     }
@@ -144,7 +177,7 @@ var showErrors = function (errors) {
     document.getElementById('errors').appendChild(div);
 
     var h2 = document.createElement("h2"),
-        text = document.createTextNode(error_count(errors)+" error(s) probited this recipe from being saved");
+        text = document.createTextNode(error_count(errors) + " error(s) probited this recipe from being saved");
     h2.appendChild(text);
     document.getElementById('error_explanation').appendChild(h2);
 
@@ -154,26 +187,54 @@ var showErrors = function (errors) {
 
     for (var key1 in errors) {
         for (var key2 in errors[key1]) {
-            if (Object.size(errors[key1])) {
-                var li = document.createElement("li"),
-                    text = document.createTextNode(key1 + " " + key2 + " " + errors[key1][key2]);
-                li.appendChild(text);
-                document.getElementById('error_ul').appendChild(li);
+            for (var key3 in errors[key1][key2]) {
+                if (Object.size(errors[key1])) {
+                    var li = document.createElement("li"),
+                        text = document.createTextNode(key1 + " " + key3 + " " + errors[key1][key2][key3]);
+                    li.appendChild(text);
+                    document.getElementById('error_ul').appendChild(li);
+                }
             }
         }
     }
 };
 
+var errorFunction = function (data) {
+    var mistakes = {};
+
+    mistakes.recipe = data.responseJSON.recipe_errors;
+    mistakes.subsection = data.responseJSON.subsection_errors;
+    mistakes.amount_unit = data.responseJSON.si_errors;
+    mistakes.ingredient = data.responseJSON.ingredient_errors;
+
+    showErrors(mistakes)
+};
+
+var rowForEach = function ($subsection, sub) {
+    var ings_a = [];
+
+    $subsection.find(".row").each(function () {
+        var ingredient = {};
+        ingredient.amount = $(this).find("#subsection_ingredient_amount").val();
+        ingredient.unit = $(this).find("#subsection_ingredient_unit").val();
+        ingredient.name = $(this).find("#ingredient_name").val();
+        ings_a.push(ingredient);
+        sub.ings = ings_a
+    });
+
+    return sub
+};
+
 $(document).on('click', ".btn.btn-default.i", function () {
     button_id = this.id;
-    id = parseInt(button_id.charAt(button_id.length - 1));
+    id = parseInt(button_id.charAt(button_id.length - 1), 10);
     addIngredient(id)
 });
 
 $(document).on('click', ".btn.btn-default.r", function () {
     var p = this.parentElement.parentElement;
     if (p.id.substring(0, p.id.length - 1) == "subsection") {
-        var ind = parseInt(p.id.charAt(p.id.length - 1));
+        var ind = parseInt(p.id.charAt(p.id.length - 1), 10);
         if ($.inArray(ind, section_queue) == -1)
             section_queue.push(ind)
     }
@@ -183,7 +244,7 @@ $(document).on('click', ".btn.btn-default.r", function () {
 $(document).on('turbolinks:load', function () {
 
     var subs_num = $(".edit_recipe").find("[class=subsection]").length;
-    if(subs_num!=0){
+    if (subs_num != 0) {
         section_queue.unshift(1)
     }
     for (i = 0; i < subs_num; i++) {
@@ -196,6 +257,7 @@ $(document).on('turbolinks:load', function () {
 
     $("#create_recipe").on("click", function (event) {
         event.preventDefault();
+
         var form = $(".actions").parent();
 
         var recipe = {};
@@ -207,23 +269,16 @@ $(document).on('turbolinks:load', function () {
 
         var subs = form.find("[class=subsection]");
         var subs_a = [];
-        subs.each(function (i) {
+        subs.each(function () {
             var $this = $(this);
             var sub = {};
             var title = $this.find(".subsection_title").val();
-            if(title == undefined){
+            if (title == undefined) {
                 title = "";
             }
             sub.title = title;
-            ings_a = [];
-            $this.find(".row").each(function (j) {
-                var ingredient = {};
-                ingredient.amount = $(this).find("#subsection_ingredient_amount").val();
-                ingredient.unit = $(this).find("#subsection_ingredient_unit").val();
-                ingredient.name = $(this).find("#ingredient_name").val();
-                ings_a.push(ingredient);
-                sub.ings = ings_a
-            });
+
+            sub = rowForEach($this, sub);
             subs_a.push(sub)
         });
 
@@ -245,13 +300,7 @@ $(document).on('turbolinks:load', function () {
                 }
             },
             error: function (data) {
-                var mistakes = {};
-                mistakes.recipe = data.responseJSON.recipe_errors;
-                mistakes.subsection = data.responseJSON.subsection_errors;
-                mistakes.amount_unit = data.responseJSON.si_errors;
-                mistakes.ingredient = data.responseJSON.ingredient_errors;
-
-                showErrors(mistakes)
+                errorFunction(data)
             }
         });
     });
@@ -274,23 +323,16 @@ $(document).on('turbolinks:load', function () {
             var $this = $(this);
             var sub = {};
             var title = $this.find("#subsection_title").val();
-            if(title == undefined){
+            if (title == undefined) {
                 title = $this.find(".subsection_title").val();
             }
 
-            if(title == undefined){
+            if (title == undefined) {
                 title = "";
             }
             sub.title = title;
-            ings_a = [];
-            $this.find(".row").each(function (j) {
-                var ingredient = {};
-                ingredient.amount = $(this).find("#subsection_ingredient_amount").val();
-                ingredient.unit = $(this).find("#subsection_ingredient_unit").val();
-                ingredient.name = $(this).find("#ingredient_name").val();
-                ings_a.push(ingredient);
-                sub.ings = ings_a
-            });
+
+            sub = rowForEach($this, sub);
             subs_a.push(sub)
         });
 
@@ -299,7 +341,7 @@ $(document).on('turbolinks:load', function () {
         recipe.description = form.find("#recipe_description").val();
 
         jQuery.ajax({
-            url: "/recipes/"+recipe.id,
+            url: "/recipes/" + recipe.id,
             type: "PUT",
             data: JSON.stringify({data: recipe}),
             dataType: "json",
@@ -310,13 +352,7 @@ $(document).on('turbolinks:load', function () {
                 }
             },
             error: function (data) {
-                var mistakes = {};
-                mistakes.recipe = data.responseJSON.recipe_errors;
-                mistakes.subsection = data.responseJSON.subsection_errors;
-                mistakes.amount_unit = data.responseJSON.si_errors;
-                mistakes.ingredient = data.responseJSON.ingredient_errors;
-
-                showErrors(mistakes)
+                errorFunction(data)
             }
         });
     });

@@ -6,6 +6,7 @@ class CategoriesController < ApplicationController
   # GET /categories.json
   def index
     @categories = Category.all
+    @categories = Category.order(:name.upcase)
   end
 
   # GET /categories/1

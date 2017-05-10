@@ -15,4 +15,10 @@ class User < ApplicationRecord
   def to_s
     username
   end
+
+  def last_recipe_time
+    recipe = recipes.order(:created_at).last
+    created = "No recipes" if recipe.nil?
+    created = recipe.created_at.strftime("%B %d, %Y") if recipe
+  end
 end

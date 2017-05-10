@@ -5,6 +5,3 @@ Arrange by <%= link_to 'name', recipes_path(order:"name") %> | <%= link_to 'last
     <%= recipe.amount %> persons, <%= recipe.duration_to_s %> <br><br>
 <% end %>
 
-<br><br>
-
-<%= link_to 'New Recipe', new_recipe_path if current_user%>

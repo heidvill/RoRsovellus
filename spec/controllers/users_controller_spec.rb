@@ -88,9 +88,9 @@ RSpec.describe UsersController, type: :controller do
         expect(assigns(:user)).to be_persisted
       end
 
-      it "redirects to the created user" do
+      it "redirects to signin" do
         post :create, params: {user: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(User.last)
+        expect(response).to redirect_to(new_session_url)
       end
     end
 

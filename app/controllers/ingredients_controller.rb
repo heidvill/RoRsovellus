@@ -5,10 +5,11 @@ class IngredientsController < ApplicationController
   # GET /ingredients
   # GET /ingredients.json
   def index
-    @ingredients = Ingredient.all
-    @ingredients = @ingredients.sort_by { |i| i.name.downcase }
     @ingredients_with_no_sub_ings = Ingredient.includes(:subsection_ingredients).where(:subsection_ingredients => {:ingredient_id => nil})
     @ingredients_with_no_sub_ings.each { |i| i.delete }
+
+    @ingredients = Ingredient.all
+    @ingredients = @ingredients.sort_by { |i| i.name.downcase }
   end
 
   # GET /ingredients/1

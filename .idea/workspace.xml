@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9a3c2d4e-4d17-4f06-a8dd-6b3930ebcb01" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/ingredients/show.html.erb" afterPath="$PROJECT_DIR$/app/views/ingredients/show.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/ingredients_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/ingredients_controller.rb" />
     </list>
     <ignored path="$PROJECT_DIR$/.bundle/" />
     <ignored path="$PROJECT_DIR$/components/" />
@@ -52,21 +52,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ingredients_controller.rb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ingredients_controller.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/ingredients_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="9" lean-forward="true" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
+            <state relative-caret-position="153">
+              <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show.html.erb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="show.html.erb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/ingredients/show.html.erb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
-              <caret line="10" column="9" lean-forward="false" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
+              <caret line="10" column="9" lean-forward="true" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -191,8 +191,8 @@
         <option value="$PROJECT_DIR$/spec/models/recipe_spec.rb" />
         <option value="$PROJECT_DIR$/spec/controllers/ingredients_controller_spec.rb" />
         <option value="$PROJECT_DIR$/app/controllers/categories_controller.rb" />
-        <option value="$PROJECT_DIR$/app/controllers/ingredients_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/ingredients/show.html.erb" />
+        <option value="$PROJECT_DIR$/app/controllers/ingredients_controller.rb" />
       </list>
     </option>
   </component>
@@ -696,12 +696,12 @@
       <workItem from="1494264827853" duration="15102000" />
       <workItem from="1494336165101" duration="1785000" />
       <workItem from="1494353775462" duration="14964000" />
-      <workItem from="1494399255138" duration="14457000" />
+      <workItem from="1494399255138" duration="14548000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="290601000" />
+    <option name="totallyTimeSpent" value="290692000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="479" y="0" width="1121" height="860" extended-state="0" />
@@ -1104,18 +1104,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/ingredients_controller.rb">
+    <entry file="file://$PROJECT_DIR$/app/views/ingredients/show.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="9" lean-forward="true" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
+        <state relative-caret-position="170">
+          <caret line="10" column="9" lean-forward="true" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/ingredients/show.html.erb">
+    <entry file="file://$PROJECT_DIR$/app/controllers/ingredients_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="9" lean-forward="false" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
+        <state relative-caret-position="153">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding />
         </state>
       </provider>

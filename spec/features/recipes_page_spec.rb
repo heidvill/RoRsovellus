@@ -68,12 +68,13 @@ describe "Edit recipe page", js: true do
   let!(:ingredient) { FactoryGirl.create :ingredient }
   let!(:subsection) { FactoryGirl.create :subsection }
   let!(:sub_ing) { FactoryGirl.create :subsection_ingredient }
+  let!(:user) {FactoryGirl.create :user}
 
   before :each do
     WebMock.disable_net_connect!(allow_localhost: true)
-    FactoryGirl.create :user
     sign_in(username: "jack", password: "Word1")
 
+    user.recipes << recipe
     recipe.subsections << subsection
     subsection.subsection_ingredients << sub_ing
     ingredient.subsection_ingredients << sub_ing

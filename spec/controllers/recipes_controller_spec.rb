@@ -192,8 +192,16 @@ RSpec.describe RecipesController, type: :controller do
   end
 
   describe "DELETE #destroy" do
+    let!(:user) {FactoryGirl.create :user}
+
+    before :each do
+      allow(controller).to receive_messages(:current_user => user)
+    end
+
     it "destroys the requested recipe" do
       recipe = Recipe.create! valid_attributes
+      user.recipes << recipe
+
       expect {
         delete :destroy, params: {id: recipe.to_param}, session: valid_session
       }.to change(Recipe, :count).by(-1)
@@ -201,6 +209,8 @@ RSpec.describe RecipesController, type: :controller do
 
     it "redirects to the recipes list" do
       recipe = Recipe.create! valid_attributes
+      user.recipes << recipe
+
       delete :destroy, params: {id: recipe.to_param}, session: valid_session
       expect(response).to redirect_to(user_path(1))
     end

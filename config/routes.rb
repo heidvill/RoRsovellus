@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :categories
-  resources :ingredients
+  resources :ingredients, only:[:index, :show, :edit, :update]
   resources :users
   resources :recipes
   resources :recipe_categories, only:[:new, :create, :destroy]

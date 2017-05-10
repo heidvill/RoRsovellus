@@ -1,5 +1,5 @@
 class IngredientsController < ApplicationController
-  before_action :set_ingredient, only: [:show, :edit, :update, :destroy]
+  before_action :set_ingredient, only: [:show, :edit, :update]
   before_action :ensure_that_signed_in, except: [:index, :show]
 
   # GET /ingredients
@@ -17,29 +17,8 @@ class IngredientsController < ApplicationController
   def show
   end
 
-  # GET /ingredients/new
-  def new
-    @ingredient = Ingredient.new
-  end
-
   # GET /ingredients/1/edit
   def edit
-  end
-
-  # POST /ingredients
-  # POST /ingredients.json
-  def create
-    @ingredient = Ingredient.new(ingredient_params)
-
-    respond_to do |format|
-      if @ingredient.save
-        format.html { redirect_to ingredients_url, notice: 'Ingredient was successfully created.' }
-        format.json { render :show, status: :created, location: @ingredient }
-      else
-        format.html { render :new }
-        format.json { render json: @ingredient.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PATCH/PUT /ingredients/1
@@ -53,16 +32,6 @@ class IngredientsController < ApplicationController
         format.html { render :edit }
         format.json { render json: @ingredient.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /ingredients/1
-  # DELETE /ingredients/1.json
-  def destroy
-    @ingredient.destroy
-    respond_to do |format|
-      format.html { redirect_to ingredients_url, notice: 'Ingredient was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 

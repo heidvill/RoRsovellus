@@ -6,9 +6,9 @@ class IngredientsController < ApplicationController
   # GET /ingredients.json
   def index
     @ingredients = Ingredient.all
-    @ingredients = Ingredient.order(:name.upcase)
+    @ingredients = @ingredients.sort_by { |i| i.name.downcase }
     @ingredients_with_no_sub_ings = Ingredient.includes(:subsection_ingredients).where(:subsection_ingredients => {:ingredient_id => nil})
-    @ingredients_with_no_sub_ings.each {|i| i.delete}
+    @ingredients_with_no_sub_ings.each { |i| i.delete }
   end
 
   # GET /ingredients/1
@@ -66,13 +66,13 @@ class IngredientsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_ingredient
-      @ingredient = Ingredient.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_ingredient
+    @ingredient = Ingredient.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def ingredient_params
-      params.require(:ingredient).permit(:name)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def ingredient_params
+    params.require(:ingredient).permit(:name)
+  end
 end

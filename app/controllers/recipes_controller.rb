@@ -43,9 +43,7 @@ class RecipesController < ApplicationController
     if request.xhr?
       everything_valid = @recipe.valid?
 
-      subsections = subsection_params[:subsections]
-
-      returned = create_subsections(subsections, everything_valid)
+      returned = create_subsections(subsection_params[:subsections], everything_valid)
       subsections_h = returned[0]
       everything_valid = returned[1]
 
@@ -99,11 +97,7 @@ class RecipesController < ApplicationController
 
         render :json => {:location => url_for(recipe_path(@recipe.id))}
       else
-        subsection_errors = returned[2]
-        sub_ing_errors = returned[3]
-        ing_errors = returned[4]
-
-        render :json => {:recipe_errors => [@recipe.errors], :subsection_errors => subsection_errors, :si_errors => sub_ing_errors, :ingredient_errors => ing_errors}, :status => 422
+        render :json => {:recipe_errors => [@recipe.errors], :subsection_errors => returned[2], :si_errors => returned[3], :ingredient_errors => returned[4]}, :status => 422
       end
     else
       respond_to do |format|
@@ -170,8 +164,6 @@ class RecipesController < ApplicationController
       ings = subsection[:ings]
       subsection_h = {}
       subsection_h["s"] = @subsection
-
-      #sub_ings_h, ings_h, everything_valid = create_sub_ings_n_ings(ings, everything_valid)
 
       returned = create_sub_ings_n_ings(ings, everything_valid)
       sub_ings_h = returned[0]

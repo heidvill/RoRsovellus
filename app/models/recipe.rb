@@ -14,8 +14,9 @@ class Recipe < ApplicationRecord
   def duration_to_s
     hh, mm = duration.divmod(60)
 
-    s = "#{hh} hours #{mm} mins" if not hh==0
-    s = "#{mm} mins" if hh==0
+    s = "#{hh} hours #{mm} mins"
+    s = "#{hh} hours" if mm == 0
+    s = "#{mm} mins" if hh == 0
     s
   end
 

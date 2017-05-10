@@ -82,9 +82,7 @@ class RecipesController < ApplicationController
       @recipe.amount = params.require(:data).permit(:amount)[:amount]
       everything_valid = @recipe.valid?
 
-      subsections = subsection_params[:subsections]
-
-      returned = update_subsections(subsections, everything_valid)
+      returned = update_subsections(subsection_params[:subsections], everything_valid)
       subsections_h = returned[0]
       everything_valid = returned[1]
 

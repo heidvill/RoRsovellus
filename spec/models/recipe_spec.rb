@@ -17,8 +17,8 @@ RSpec.describe Recipe, type: :model do
   end
 
   it "prints duration with hours and minutes" do
-    recipe = Recipe.create name:"Ice cream", description:"Freeze", amount:4, duration:240
+    recipe = Recipe.create name:"Ice cream", description:"Freeze", amount:4, duration:245
 
-    expect(recipe.duration_to_s).to eq ("4 hours 0 mins")
+    expect(recipe.duration_to_s).to eq ("4 hours 5 mins")
   end
 end

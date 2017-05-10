@@ -1,5 +1,12 @@
 <h1>Ingredients</h1>
 
+<% if @ingredients.nil? || @ingredients.empty? %>
+    No ingredients in database.
+<% else %>
+    <%= pluralize(@ingredients.count, "ingredient")%> in database.
+    <br><br>
+<% end %>
+
 <table class="table table-hover">
   <div class="row">
       <thead>

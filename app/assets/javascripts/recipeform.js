@@ -286,8 +286,6 @@ $(document).on('turbolinks:load', function () {
 
         recipe.description = form.find("#recipe_description").val();
 
-        //debugger
-
         jQuery.ajax({
             url: "/recipes",
             type: "POST",

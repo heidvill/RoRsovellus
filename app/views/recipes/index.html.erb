@@ -1,5 +1,13 @@
 <h1>Recipes</h1>
-Arrange by <%= link_to 'name', recipes_path(order:"name") %> | <%= link_to 'last added', recipes_path(order:"added") %>
+
+<% if @recipes.nil? || @recipes.empty? %>
+    No recipes in database.
+<% else %>
+    <%= pluralize(@recipes.count, "recipe")%> in database.
+    <br><br>
+    Arrange by <span class="label label-info"><%= link_to 'name', recipes_path(order: "name") %></span> <span class="label label-info"><%= link_to 'last added', recipes_path(order: "added") %></span>
+<% end %>
+
 <% @recipes.each do |recipe| %>
     <h3><%= link_to recipe.name, recipe %></h3>
     <%= recipe.amount %> persons, <%= recipe.duration_to_s %> <br><br>

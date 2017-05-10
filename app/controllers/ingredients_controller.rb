@@ -7,6 +7,8 @@ class IngredientsController < ApplicationController
   def index
     @ingredients = Ingredient.all
     @ingredients = Ingredient.order(:name.upcase)
+    @ingredients_with_no_sub_ings = Ingredient.includes(:subsection_ingredients).where(:subsection_ingredients => {:ingredient_id => nil})
+    @ingredients_with_no_sub_ings.each {|i| i.delete}
   end
 
   # GET /ingredients/1

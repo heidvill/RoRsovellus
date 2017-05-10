@@ -20,6 +20,7 @@ require 'rails_helper'
 
 RSpec.describe IngredientsController, type: :controller do
   let!(:user) {FactoryGirl.create :user}
+  let!(:subsection_ingredient) {FactoryGirl.create :subsection_ingredient}
 
   before :each do
     allow(controller).to receive_messages(:current_user => user)
@@ -44,6 +45,7 @@ RSpec.describe IngredientsController, type: :controller do
   describe "GET #index" do
     it "assigns all ingredients as @ingredients" do
       ingredient = Ingredient.create! valid_attributes
+      ingredient.subsection_ingredients << subsection_ingredient
       get :index, params: {}, session: valid_session
       expect(assigns(:ingredients)).to eq([ingredient])
     end
